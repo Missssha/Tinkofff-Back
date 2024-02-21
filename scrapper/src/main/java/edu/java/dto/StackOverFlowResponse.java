@@ -1,4 +1,4 @@
-package edu.java.clients;
+package edu.java.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;

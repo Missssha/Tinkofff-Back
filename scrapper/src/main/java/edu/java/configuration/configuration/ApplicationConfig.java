@@ -1,4 +1,4 @@
-package edu.java.configuration;
+package edu.java.configuration.configuration;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

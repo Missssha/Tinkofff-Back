@@ -1,4 +1,4 @@
-package edu.java.clients;
+package edu.java.configuration.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
