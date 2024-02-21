@@ -1,4 +1,4 @@
-package edu.java.configuration.service;
+package edu.java.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

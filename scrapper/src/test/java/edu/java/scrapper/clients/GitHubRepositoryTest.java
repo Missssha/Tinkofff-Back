@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
-public class GitHubClientTest {
+public class GitHubRepositoryTest {
 
     @Mock
     private GitHubRepository gitHubRepository;
