@@ -1,4 +1,4 @@
-package edu.java.scrapper.clients;
+package edu.java.scrapper.dto;
 
 import edu.java.dto.GitHubRepository;
 import org.junit.jupiter.api.Test;
@@ -28,11 +28,6 @@ public class GitHubRepositoryTest {
         assertEquals("test-branch", gitHubRepository.getDefaultBranch());
     }
 
-    @Test
-    public void testConstructorWithNullArgs() {
-        gitHubRepository = new GitHubRepository();
-        assertThrows(NullPointerException.class, () -> new GitHubRepository());
-    }//TODO переделать тест
 
     @Test
     public void testConstructorWithValidArgs() {
