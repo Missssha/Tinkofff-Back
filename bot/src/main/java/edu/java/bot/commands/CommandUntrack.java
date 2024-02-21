@@ -8,7 +8,8 @@ import edu.java.bot.users.User;
 public class CommandUntrack implements Command {
     private final UserService userService;
     private final String unknownUser = "Вы не зарегистрированы \nЗарегистрируйтесь с помощью команды /start";
-    private final String untrackMessage = "Предоставьте ссылку, по которой вы хотите прекратить отслеживание обновлений ";
+    private final String untrackMessage =
+        "Предоставьте ссылку, по которой вы хотите прекратить отслеживание обновлений ";
 
     public CommandUntrack(UserService userService) {
         this.userService = userService;

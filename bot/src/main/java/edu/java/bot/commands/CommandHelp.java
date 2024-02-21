@@ -5,6 +5,7 @@ import java.util.List;
 
 public class CommandHelp implements Command {
     private final List<Command> commandList;
+
     public CommandHelp(List<Command> commandList) {
         this.commandList = commandList;
     }
