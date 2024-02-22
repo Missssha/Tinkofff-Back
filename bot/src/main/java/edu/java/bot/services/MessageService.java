@@ -29,7 +29,7 @@ public class MessageService {
             .orElseGet(() -> processNonCommandMessage(chatId, textMessage));
     }
 
-    private String processNonCommandMessage(Long chatId, String text) {
+    public String processNonCommandMessage(Long chatId, String text) {
         var userOptional = userRepository.findUserById(chatId);
         if (userOptional.isEmpty()) {
             return DO_REGISTRATION_MESSAGE;
