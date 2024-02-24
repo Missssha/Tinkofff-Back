@@ -5,7 +5,6 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.ScrapperApplication;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +14,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import java.io.IOException;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.status;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
-import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {ScrapperApplication.class})
 @AutoConfigureWebTestClient(timeout = "10000")
 @WireMockTest
-public class StackOverFlowControllerTest {
+public class GitHubControllerTest {
 
     @Autowired
     private WebTestClient webTestClient;
@@ -38,7 +34,7 @@ public class StackOverFlowControllerTest {
 
     @DynamicPropertySource
     public static void setUpMockBaseUrl(DynamicPropertyRegistry registry) {
-        registry.add("app.stack-overflow-base-url", wireMockExtension::baseUrl);
+        registry.add("app.git-hub-base-url", wireMockExtension::baseUrl);
     }
 
     @AfterEach
@@ -48,57 +44,54 @@ public class StackOverFlowControllerTest {
 
     @Test
     public void testStatusCodePositive() {
-        wireMockExtension.stubFor(WireMock.get("/questions/13133695?order=desc&sort=activity&site=stackoverflow")
+        wireMockExtension.stubFor(WireMock.get(WireMock.urlEqualTo(
+                "/repos/stukenvitalii/TinkoffBot")
+            ).withHeader("Authorization", WireMock.equalTo("Bearer " + System.getenv("GITHUB_API_TOKEN_SECOND")))
             .willReturn(aResponse()
                 .withStatus(200)
+                .withBody("{}")
                 .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
             ));
 
-        webTestClient.get().uri("/questions/13133695")
-            .exchange()
-            .expectStatus()
-            .isOk();
-    }
-
-    @Test
-    void testGetValidJson() {
-        wireMockExtension.stubFor(WireMock.get(urlEqualTo("/questions/7854933?order=desc&sort=activity&site=stackoverflow"))
-            .willReturn(aResponse()
-                .withBody("{\n" +
-                    "    \"items\": [\n" +
-                    "        {\n" +
-                    "            \"is_answered\": true,\n" +
-                    "            \"question_id\": 7854933,\n" +
-                    "            \"title\": \"will linq to objects block the thread?\"\n" +
-                    "        }\n" +
-                    "    ]\n}"
-                )
-                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                .withStatus(200)));
-
-        webTestClient.get().uri("/questions/7854933")
+        webTestClient.get().uri("/repos/stukenvitalii/TinkoffBot")
             .exchange()
             .expectStatus()
             .isOk()
-            .expectBody()
-            .jsonPath("$.question_id").isEqualTo(7854933)
-            .jsonPath("$.is_answered").isEqualTo(true)
-            .jsonPath("$.title").isEqualTo("will linq to objects block the thread?");
+            .expectBody().json("{}");
+    }
+
+    @Test
+    public void testGetValidJson() throws IOException {
+        wireMockExtension.stubFor(WireMock.get(
+                "/repos/stukenvitalii/TinkoffBot"
+            ).withHeader("Authorization", WireMock.equalTo("Bearer " + System.getenv("GITHUB_API_TOKEN_SECOND")))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withBody("{\"id\":756021540,\"name\":\"TinkoffBot\",\"defaultBranch\":null}")
+                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+            ));
+
+        webTestClient.get().uri("/repos/stukenvitalii/TinkoffBot")
+            .exchange()
+            .expectStatus()
+            .isOk()
+            .expectBody().json("{\"id\":756021540,\"name\":\"TinkoffBot\",\"defaultBranch\":null}");
     }
 
     @Test
     public void testIncorrectUrl() {
-        wireMockExtension.stubFor(WireMock.get(urlEqualTo("/questions/456?order=desc&sort=activity&site=stackoverflow"))
+        wireMockExtension.stubFor(WireMock.get(
+                "/repos/stukenvitalii/TinkoffBot1"
+            ).withHeader("Authorization", WireMock.equalTo("Bearer " + System.getenv("GITHUB_API_TOKEN_SECOND")))
             .willReturn(aResponse()
-                .withBody("{\n" +
-                    "   \"items\": []\n" +
-                    "}")
+                .withStatus(500)
+                .withBody("{}")
                 .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                .withStatus(404)));
+            ));
 
-        webTestClient.get().uri("/questions/456")
+        webTestClient.get().uri("/repos/stukenvitalii/TinkoffBot1")
             .exchange()
             .expectStatus()
-            .is5xxServerError(); //TODO разобраться как тут получить 404 и обработать его
+            .is5xxServerError();
     }
 }
