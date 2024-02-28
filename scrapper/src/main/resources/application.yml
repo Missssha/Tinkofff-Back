@@ -1,9 +1,7 @@
 app:
-  git-hub-base-url: "https://api.github.com"
-  stack-overflow-base-url: "https://api.stackexchange.com/2.3"
   scheduler:
     enable: true
-    interval: 5s
+    interval: 10s
     force-check-delay: 10s
 
 spring:
@@ -11,7 +9,7 @@ spring:
     name: scrapper
 
 server:
-  port: 8080
+  port: 8000
 
 logging:
   config: classpath:log4j2-plain.xml

@@ -9,21 +9,21 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebClientConfig {
+    private static final String GITHUB = "https://api.github.com/";
+    private static final String STACKOVERFLOW = "https://api.stackexchange.com/2.3";
     @Bean
-    public WebClient gitHubClient(@Value("${app.git-hub-base-url}") String baseUrl,
-        WebClient.Builder webClientBuilder) {
+    public WebClient gitHubClient(WebClient.Builder webClientBuilder) {
         return webClientBuilder
-            .baseUrl(baseUrl)
+            .baseUrl(GITHUB)
             .defaultHeaders(h -> h.setBearerAuth(System.getenv("GITHUB_API_TOKEN_SECOND")))
             .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
             .build();
     }
 
     @Bean
-    public WebClient stackOverFlowClient(@Value("${app.stack-overflow-base-url}") String baseUrl,
-        WebClient.Builder webClientBuilder) {
+    public WebClient stackOverFlowClient(WebClient.Builder webClientBuilder) {
         return webClientBuilder
-            .baseUrl(baseUrl)
+            .baseUrl(STACKOVERFLOW)
             .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
             .build();
     }
