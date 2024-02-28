@@ -17,6 +17,5 @@ public class StackOverFlowQuestion {
     @JsonProperty("is_answered")
     private boolean isAnswered;
 
-    @JsonProperty("title")
     private String title;
 }
