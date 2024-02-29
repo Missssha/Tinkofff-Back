@@ -1,14 +1,24 @@
 package edu.java.client;
 
 import edu.java.dto.GitHubRepository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 public class GitHubClient {
-    private final WebClient webClient;
+    private WebClient webClient;
+    private static final String GITHUB = "https://api.github.com/";
 
     public GitHubClient(WebClient webClient) {
-        this.webClient = webClient;
+    }
+
+    @Bean
+    public WebClient gitHubClient(WebClient.Builder webClientBuilder) {
+        return webClientBuilder.baseUrl(GITHUB)
+            .defaultHeaders(h -> h.setBearerAuth(System.getenv("GITHUB_API_TOKEN_SECOND")))
+            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE).build();
     }
 
     public Mono<GitHubRepository> getRepositoryInfo(String name, String reposName) {
