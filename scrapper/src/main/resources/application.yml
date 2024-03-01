@@ -1,4 +1,6 @@
 app:
+  gitUrl: https://api.github.com/
+  stackUrl: https://api.stackexchange.com/2.3
   scheduler:
     enable: true
     interval: 10s
@@ -9,7 +11,7 @@ spring:
     name: scrapper
 
 server:
-  port: 8080
+  port: 8000
 
 logging:
   config: classpath:log4j2-plain.xml
