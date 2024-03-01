@@ -40,7 +40,7 @@ public class GitHubClientTest {
             ));
 
         WebClient webClient = WebClient.builder().baseUrl("http://localhost:" + wireMockServer.port()).build();
-        GitHubClient gitHubClient = new GitHubClient(webClient);
+        GitHubClient gitHubClient = new GitHubClient(webClient.toString());
 
         StepVerifier.create(gitHubClient.getRepositoryInfo(name, reposName))
             .expectNextMatches(repository -> repository.getName().equals("testRepo") &&

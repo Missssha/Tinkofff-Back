@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 public class StackOverFlowClient {
 
     private WebClient webClient;
-    private WebClient.Builder webClientBuilder;
+    private final WebClient.Builder webClientBuilder = WebClient.builder();
     private static final String URL = "/questions/%d?order=%s&sort=%s&site=stackoverflow";
 
     public StackOverFlowClient(WebClient webClient) {

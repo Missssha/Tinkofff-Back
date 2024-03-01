@@ -8,11 +8,11 @@ import reactor.core.publisher.Mono;
 
 public class GitHubClient {
     private WebClient webClient;
-    private WebClient.Builder webClientBuilder;
+    private final WebClient.Builder webClientBuilder = WebClient.builder();
     private static final String GITHUB = "https://api.github.com/";
 
-    public GitHubClient(WebClient webClient) {
-    }
+//    public GitHubClient(WebClient webClient) {
+//    }
 
     public GitHubClient(String baseurl) {
         webClient = webClientBuilder.baseUrl(baseurl)

@@ -11,6 +11,7 @@ public class WebClientConfig {
     private static final String STACKOVERFLOW = "https://api.stackexchange.com/2.3";
 
 
+
     @Bean
     public GitHubClient gitHubClient() {
         return new GitHubClient(GITHUB);
