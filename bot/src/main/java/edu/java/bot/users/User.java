@@ -1,19 +1,15 @@
 package edu.java.bot.users;
 
 import edu.java.bot.models.SessionState;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import java.net.URI;
 import java.util.List;
 
-@Getter
 public class User {
     private Long id;
     private List<URI> sites;
 
-    public User(SessionState sessionState) {
-        this.state = sessionState;
+    public SessionState getState() {
+        return state;
     }
 
     public void setState(SessionState state) {
@@ -28,14 +24,17 @@ public class User {
         this.state = state;
 
     }
-    public User(Long id, SessionState state){
-        this.id = id;
-        this.state = state;
+
+    public Long getId() {
+        return id;
     }
-    public User(){}
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public List<URI> getSites() {
+        return sites;
     }
 
     public void setSites(List<URI> sites) {
