@@ -1,6 +1,7 @@
 package edu.java.bot.processors;
 
 import edu.java.bot.commands.Command;
+import lombok.NoArgsConstructor;
 import java.util.Map;
 import java.util.Optional;
 

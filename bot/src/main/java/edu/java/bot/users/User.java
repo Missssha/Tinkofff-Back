@@ -1,10 +1,11 @@
 package edu.java.bot.users;
 
 import edu.java.bot.models.SessionState;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import java.net.URI;
 import java.util.List;
-import lombok.Getter;
-
 
 @Getter
 public class User {
@@ -27,14 +28,11 @@ public class User {
         this.state = state;
 
     }
-
-    public User(Long id, SessionState state) {
+    public User(Long id, SessionState state){
         this.id = id;
         this.state = state;
     }
-
-    public User() {
-    }
+    public User(){}
 
     public void setId(long id) {
         this.id = id;
