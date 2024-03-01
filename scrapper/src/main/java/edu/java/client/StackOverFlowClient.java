@@ -11,7 +11,6 @@ public class StackOverFlowClient {
     private WebClient webClient;
     private WebClient.Builder webClientBuilder;
     private static final String URL = "/questions/%d?order=%s&sort=%s&site=stackoverflow";
-    private static final String STACKOVERFLOW = "https://api.stackexchange.com/2.3";
 
     public StackOverFlowClient(WebClient webClient) {
     }
