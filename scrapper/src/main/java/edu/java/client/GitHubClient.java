@@ -1,7 +1,6 @@
 package edu.java.client;
 
 import edu.java.dto.GitHubRepository;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -9,14 +8,14 @@ import reactor.core.publisher.Mono;
 
 public class GitHubClient {
     private WebClient webClient;
+    private WebClient.Builder webClientBuilder;
     private static final String GITHUB = "https://api.github.com/";
 
     public GitHubClient(WebClient webClient) {
     }
 
-    @Bean
-    public WebClient gitHubClient(WebClient.Builder webClientBuilder) {
-        return webClientBuilder.baseUrl(GITHUB)
+    public GitHubClient(String baseurl) {
+        webClient = webClientBuilder.baseUrl(baseurl)
             .defaultHeaders(h -> h.setBearerAuth(System.getenv("GITHUB_API_TOKEN_SECOND")))
             .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE).build();
     }

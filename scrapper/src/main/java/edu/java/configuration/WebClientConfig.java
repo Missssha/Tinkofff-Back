@@ -1,9 +1,9 @@
 package edu.java.configuration;
 
+import edu.java.client.GitHubClient;
+import edu.java.client.StackOverFlowClient;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebClientConfig {
@@ -11,15 +11,14 @@ public class WebClientConfig {
     private static final String STACKOVERFLOW = "https://api.stackexchange.com/2.3";
 
 
-    public WebClient gitHubClient(WebClient.Builder webClientBuilder) {
-        return webClientBuilder.baseUrl(GITHUB)
-            .defaultHeaders(h -> h.setBearerAuth(System.getenv("GITHUB_API_TOKEN_SECOND")))
-            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE).build();
+    @Bean
+    public GitHubClient gitHubClient() {
+        return new GitHubClient(GITHUB);
     }
 
 
-    public WebClient stackOverFlowClient(WebClient.Builder webClientBuilder) {
-        return webClientBuilder.baseUrl(STACKOVERFLOW)
-            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE).build();
+    @Bean
+    public StackOverFlowClient stackOverFlowClient() {
+        return new StackOverFlowClient(STACKOVERFLOW);
     }
 }
