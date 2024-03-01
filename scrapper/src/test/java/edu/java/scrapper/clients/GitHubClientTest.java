@@ -39,8 +39,8 @@ public class GitHubClientTest {
                 .withBody("{\"id\":756021540,\"name\":\"testRepo\",\"defaultBranch\":\"master\"}")
             ));
 
-        WebClient webClient = WebClient.builder().baseUrl("http://localhost:" + wireMockServer.port()).build();
-        GitHubClient gitHubClient = new GitHubClient(webClient);
+        String baseUrl = "http://localhost:" + wireMockServer.port();
+        GitHubClient gitHubClient = new GitHubClient(baseUrl);
 
         StepVerifier.create(gitHubClient.getRepositoryInfo(name, reposName))
             .expectNextMatches(repository -> repository.getName().equals("testRepo") &&

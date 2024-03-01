@@ -47,8 +47,8 @@ public class StackOverFlowClientTest {
             ));
 
         // Act
-        WebClient webClient = WebClient.builder().baseUrl("http://localhost:" + wireMockServer.port()).build();
-        StackOverFlowClient stackOverflowClient = new StackOverFlowClient(webClient);
+        String baseUrl ="http://localhost:" + wireMockServer.port();
+        StackOverFlowClient stackOverflowClient = new StackOverFlowClient(baseUrl);
 
         // Assert
         StepVerifier.create(stackOverflowClient.fetchQuestion(questionId, sort, order))

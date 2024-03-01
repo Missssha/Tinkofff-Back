@@ -12,10 +12,6 @@ public class StackOverFlowClient {
     private final WebClient.Builder webClientBuilder = WebClient.builder();
     private static final String URL = "/questions/%d?order=%s&sort=%s&site=stackoverflow";
 
-    public StackOverFlowClient(WebClient webClient) {
-        this.webClient = webClient;
-    }
-
     public StackOverFlowClient(String baseurl) {
         webClient = webClientBuilder.baseUrl(baseurl)
             .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE).build();
