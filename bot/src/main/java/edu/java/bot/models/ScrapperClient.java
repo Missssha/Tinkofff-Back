@@ -32,6 +32,7 @@ public class ScrapperClient {
             .header(accept, applicationJson)
             .header(tgChatId, String.valueOf(chatId))
             .retrieve()
+            .onStatus(HttpStatus.BAD_REQUEST::equals, response -> Mono.error(new ApiException(response, "Not Found :(")))
             .bodyToMono(ListLinksResponse.class)
             .block();
     }
