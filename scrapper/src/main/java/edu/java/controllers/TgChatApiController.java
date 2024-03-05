@@ -41,8 +41,8 @@ public class TgChatApiController implements TgChatApi {
     }
 
     public ResponseEntity<Void> tgChatIdPost(
-        @Parameter(in = ParameterIn.PATH, description = "", required = true, schema = @Schema()) @PathVariable("id")
-        Long id
+        @Parameter(in = ParameterIn.PATH, description = "", required = true, schema = @Schema())
+        @PathVariable("id") Long id
     ) {
 //        if (id == 123) {
 //            throw new IllegalStateException("Id is 123");

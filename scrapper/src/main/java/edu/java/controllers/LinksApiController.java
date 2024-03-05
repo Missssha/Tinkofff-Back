@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import javax.annotation.Generated;
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen",
            date = "2024-02-29T10:09:42.512141887Z[GMT]")
 @RestController
+@Log4j2
 public class LinksApiController implements LinksApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LinksApiController.class);
@@ -53,7 +55,7 @@ public class LinksApiController implements LinksApi {
         if (accept != null && accept.contains(applicationJsonString)) {
             try {
                 return new ResponseEntity<LinkResponse>(objectMapper.readValue(
-                    "{\n  \"id\" : 1,\n  \"url\" : \"http://example.com/aeiou\"\n}",
+                    "Data...",
                     LinkResponse.class
                 ), HttpStatus.OK);
             } catch (IOException e) {
@@ -74,7 +76,7 @@ public class LinksApiController implements LinksApi {
         if (accept != null && accept.contains(applicationJsonString)) {
             try {
                 return new ResponseEntity<ListLinksResponse>(objectMapper.readValue(
-                    "{\n  \"size\" : 6,\n  \"links\" : [ {\n    \"id\" : 0,\n    \"url\" : \"http://example.com/aeiou\"\n  }, {\n    \"id\" : 0,\n    \"url\" : \"http://example.com/aeiou\"\n  } ]\n}",
+                    "Data...",
                     ListLinksResponse.class
                 ), HttpStatus.OK);
             } catch (IOException e) {
@@ -96,7 +98,7 @@ public class LinksApiController implements LinksApi {
         if (accept != null && accept.contains(applicationJsonString)) {
             try {
                 return new ResponseEntity<LinkResponse>(objectMapper.readValue(
-                    "{\n  \"id\" : 0,\n  \"url\" : \"http://example.com/aeiou\"\n}",
+                    "Data...",
                     LinkResponse.class
                 ), HttpStatus.OK);
             } catch (IOException e) {
