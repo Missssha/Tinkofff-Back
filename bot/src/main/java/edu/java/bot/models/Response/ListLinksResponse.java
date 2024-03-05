@@ -75,16 +75,9 @@ public class ListLinksResponse {
         StringBuilder sb = new StringBuilder();
         sb.append("class ListLinksResponse {\n");
 
-        sb.append("    links: ").append(toIndentedString(links)).append("\n");
-        sb.append("    size: ").append(toIndentedString(size)).append("\n");
+        sb.append("    links: ").append("\n");
+        sb.append("    size: ").append("\n");
         sb.append("}");
         return sb.toString();
-    }
-
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }

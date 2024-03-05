@@ -87,18 +87,11 @@ public class LinkUpdateRequest {
         StringBuilder sb = new StringBuilder();
         sb.append("class LinkUpdate {\n");
 
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    url: ").append(toIndentedString(url)).append("\n");
-        sb.append("    description: ").append(toIndentedString(description)).append("\n");
-        sb.append("    tgChatIds: ").append(toIndentedString(tgChatIds)).append("\n");
+        sb.append("    id: ").append("\n");
+        sb.append("    url: ").append("\n");
+        sb.append("    description: ").append("\n");
+        sb.append("    tgChatIds: ").append("\n");
         sb.append("}");
         return sb.toString();
-    }
-
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }

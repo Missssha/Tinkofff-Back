@@ -90,19 +90,12 @@ public class ApiErrorResponse {
         StringBuilder sb = new StringBuilder();
         sb.append("class ApiErrorResponse {\n");
 
-        sb.append("    description: ").append(toIndentedString(description)).append("\n");
-        sb.append("    code: ").append(toIndentedString(code)).append("\n");
-        sb.append("    exceptionName: ").append(toIndentedString(exceptionName)).append("\n");
-        sb.append("    exceptionMessage: ").append(toIndentedString(exceptionMessage)).append("\n");
-        sb.append("    stacktrace: ").append(toIndentedString(stacktrace)).append("\n");
+        sb.append("    description: ").append("\n");
+        sb.append("    code: ").append("\n");
+        sb.append("    exceptionName: ").append("\n");
+        sb.append("    exceptionMessage: ").append("\n");
+        sb.append("    stacktrace: ").append("\n");
         sb.append("}");
         return sb.toString();
-    }
-
-    private String toIndentedString(java.lang.Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }
