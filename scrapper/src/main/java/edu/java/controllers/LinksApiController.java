@@ -30,6 +30,7 @@ public class LinksApiController implements LinksApi {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LinksApiController.class);
     private final String acceptString = "Accept";
+    private final String info = "Info";
     private final String applicationJsonString = "application/json";
     private final String errorString = "Couldn't serialize response for content type application/json";
 
@@ -55,7 +56,7 @@ public class LinksApiController implements LinksApi {
         if (accept != null && accept.contains(applicationJsonString)) {
             try {
                 return new ResponseEntity<LinkResponse>(objectMapper.readValue(
-                    "Data...",
+                    info,
                     LinkResponse.class
                 ), HttpStatus.OK);
             } catch (IOException e) {
@@ -76,7 +77,7 @@ public class LinksApiController implements LinksApi {
         if (accept != null && accept.contains(applicationJsonString)) {
             try {
                 return new ResponseEntity<ListLinksResponse>(objectMapper.readValue(
-                    "Data...",
+                    info,
                     ListLinksResponse.class
                 ), HttpStatus.OK);
             } catch (IOException e) {
@@ -98,7 +99,7 @@ public class LinksApiController implements LinksApi {
         if (accept != null && accept.contains(applicationJsonString)) {
             try {
                 return new ResponseEntity<LinkResponse>(objectMapper.readValue(
-                    "Data...",
+                    info,
                     LinkResponse.class
                 ), HttpStatus.OK);
             } catch (IOException e) {

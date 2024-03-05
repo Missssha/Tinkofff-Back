@@ -16,6 +16,7 @@ public class ScrapperClient {
     private final String baseUrlLinks = "http://localhost:1010/links";
     private final String baseUrlTgChat = "http://localhost:1010/tg-chat/{id}";
     private final String accept = "Accept";
+    private final String error = "Error";
     private final String applicationJson = "application/json";
     private final String tgChatId = "Tg-Chat-Id";
 
@@ -32,7 +33,7 @@ public class ScrapperClient {
             .header(accept, applicationJson)
             .header(tgChatId, String.valueOf(chatId))
             .retrieve()
-            .onStatus(HttpStatus.BAD_REQUEST::equals, response -> Mono.error(new ApiException(response, "Not Found :(")))
+            .onStatus(HttpStatus.BAD_REQUEST::equals, response -> Mono.error(new ApiException(response, error)))
             .bodyToMono(ListLinksResponse.class)
             .block();
     }
@@ -45,7 +46,7 @@ public class ScrapperClient {
             .header(accept, applicationJson)
             .header(tgChatId, String.valueOf(chatId))
             .retrieve()
-            .onStatus(HttpStatus.BAD_REQUEST::equals, response -> Mono.error(new ApiException(response, "Some error")))
+            .onStatus(HttpStatus.BAD_REQUEST::equals, response -> Mono.error(new ApiException(response, error)))
             .bodyToMono(LinkResponse.class)
             .block();
     }
@@ -58,6 +59,7 @@ public class ScrapperClient {
             .header(accept, applicationJson)
             .header(tgChatId, String.valueOf(chatId))
             .retrieve()
+            .onStatus(HttpStatus.BAD_REQUEST::equals, response -> Mono.error(new ApiException(response, error)))
             .bodyToMono(LinkResponse.class)
             .block();
     }
@@ -81,6 +83,7 @@ public class ScrapperClient {
             .uri(baseUrlTgChat, chatId)
             .header(accept, applicationJson)
             .retrieve()
+            .onStatus(HttpStatus.BAD_REQUEST::equals, response -> Mono.error(new ApiException(response, error)))
             .bodyToMono(String.class)
             .block();
     }

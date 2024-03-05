@@ -1,21 +1,33 @@
 package edu.java.bot.models.exception;
 
 import edu.java.bot.models.Response.ApiErrorResponse;
+import jakarta.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@org.springframework.web.bind.annotation.RestControllerAdvice
-public class RestControllerAdvice {
+@RestControllerAdvice
+public class RestController {
     @ExceptionHandler(ApiException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrorResponse handle(ApiException ex) {
-
         return new ApiErrorResponse(ex.getMessage(),
             HttpStatus.BAD_REQUEST.toString(),
             ex.getClass().toGenericString(),
+            ex.getMessage(),
+            getStackTraceAsStringArray(ex));
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrorResponse handleValidationException(ValidationException ex) {
+        return new ApiErrorResponse(
+            ex.getMessage(),
+            HttpStatus.BAD_REQUEST.toString(),
+            ex.getClass().getSimpleName(),
             ex.getMessage(),
             getStackTraceAsStringArray(ex));
     }
