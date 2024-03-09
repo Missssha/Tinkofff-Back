@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UpdatesApiController implements edu.java.bot.controllers.UpdatesApi {
+public class UpdatesApiController implements UpdatesApi {
 
     private final ObjectMapper objectMapper;
 

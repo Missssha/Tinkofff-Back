@@ -4,28 +4,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
 import java.util.Objects;
+import lombok.Data;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
 /**
  * AddLinkRequest
  */
-@Setter @Validated
-
+@Setter
+@Validated
+@Data
 public class AddLinkRequest {
-    @JsonProperty("link")
     private URI link = null;
 
-    public AddLinkRequest link(URI link) {
-        this.link = link;
-        return this;
-    }
-
-    /**
-     * Get link
-     *
-     * @return link
-     **/
     @Schema(description = "")
     public URI getLink() {
         return link;

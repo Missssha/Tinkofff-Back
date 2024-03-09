@@ -10,16 +10,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
-@Setter @Getter @Validated
-
+@Setter
+@Getter
+@Validated
 public class LinkUpdateRequest {
-    @JsonProperty("id")
     private Long id = null;
 
-    @JsonProperty("url")
     private URI url = null;
 
-    @JsonProperty("description")
     private String description = null;
 
     @JsonProperty("tgChatIds")
