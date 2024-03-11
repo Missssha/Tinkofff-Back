@@ -11,12 +11,6 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
-            <column name="chat_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="link_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
 
         <createTable tableName="link">
@@ -29,19 +23,26 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="link_id" type="bigint">
+            <column name="last_check_time" type="timestamp with time zone">
                 <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="chat_with_link">
+
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
             </column>
 
             <column name="chat_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="last_check_time" type="timestamp with time zone">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="created_at" type="timestamp with time zone">
+            <column name="link_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
