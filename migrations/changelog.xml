@@ -7,23 +7,29 @@
     <changeSet id="init_tables" author="some_chats_and_links">
         <createTable tableName="chat">
 
-            <column name="id" type="bigint">
-                <constraints nullable="false"/>
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
             </column>
 
             <column name="chat_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-
+            <column name="link_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createTable tableName="link">
 
-            <column name="id" type="bigint">
-                <constraints nullable="false"/>
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
             </column>
 
             <column name="url" type="text">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="link_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
 
