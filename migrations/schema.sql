@@ -16,12 +16,14 @@ CREATE TABLE link
     unique (url)
 );
 /**/
-CREATE TABLE chat_with_link
+CREATE TABLE chat_link
 (
     id              bigint                  NOT NULL PRIMARY KEY,
-    chat_id         bigint,
+    chat_id         bigint                  UNIQUE,
     link_id         bigint,
 
     FOREIGN KEY (chat_id)                   REFERENCES chat(id),
-    FOREIGN KEY (link_id)                   REFERENCES link(id)
+    FOREIGN KEY (link_id)                   REFERENCES link(id),
+
+
 );
