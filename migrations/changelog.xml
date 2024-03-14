@@ -39,12 +39,13 @@
             </column>
 
             <column name="chat_id" type="bigint">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false"/>
             </column>
 
             <column name="link_id" type="bigint">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false"/>
             </column>
         </createTable>
+        <addUniqueConstraint tableName="chat_link" columnNames="chat_id, link_id" />
     </changeSet>
 </databaseChangeLog>

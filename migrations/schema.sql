@@ -1,6 +1,6 @@
 CREATE TABLE chat
 (
-    id              bigint                  NOT NULL PRIMARY KEY
+    id              BIGINT                  NOT NULL PRIMARY KEY
 );
 /**/
 CREATE TABLE link
@@ -12,18 +12,18 @@ CREATE TABLE link
     created_by      text                     not null,
 
 
-    primary key (id),
-    unique (url)
+    PRIMARY KEY (id),
+    UNIQUE (url)
 );
 /**/
 CREATE TABLE chat_link
 (
-    id              bigint                  NOT NULL PRIMARY KEY,
-    chat_id         bigint                  UNIQUE,
-    link_id         bigint                  UNIQUE,
+    id              BIGINT                  NOT NULL PRIMARY KEY,
+    chat_id         BIGINT                  NOT NULL ,
+    link_id         BIGINT                  NOT NULL ,
 
     FOREIGN KEY (chat_id)                   REFERENCES chat(id),
     FOREIGN KEY (link_id)                   REFERENCES link(id),
 
-
+    UNIQUE (chat_id, link_id)
 );
