@@ -43,7 +43,7 @@
             </column>
 
             <column name="link_id" type="bigint">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
     </changeSet>

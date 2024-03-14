@@ -20,7 +20,7 @@ CREATE TABLE chat_link
 (
     id              bigint                  NOT NULL PRIMARY KEY,
     chat_id         bigint                  UNIQUE,
-    link_id         bigint,
+    link_id         bigint                  UNIQUE,
 
     FOREIGN KEY (chat_id)                   REFERENCES chat(id),
     FOREIGN KEY (link_id)                   REFERENCES link(id),
