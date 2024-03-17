@@ -1,6 +1,8 @@
 package edu.java.bot.services;
 
+import com.pengrad.telegrambot.TelegramBot;
 import edu.java.bot.processors.CommandHandler;
+import edu.java.bot.processors.UrlProcessor;
 import edu.java.bot.repository.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,16 +17,18 @@ public class MessageServiceTest {
 
     @Mock
     private CommandHandler commandHandler;
-
     @Mock
     private UserService userService;
-
+    @Mock
+    private UrlProcessor urlProcessor;
+    @Mock
+    private TelegramBot telegramBot;
     private MessageService messageService;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        messageService = new MessageService(commandHandler, userService);
+        messageService = new MessageService(telegramBot, commandHandler, userService, urlProcessor);
     }
 
 

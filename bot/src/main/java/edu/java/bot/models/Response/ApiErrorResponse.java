@@ -1,6 +1,5 @@
 package edu.java.bot.models.Response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +14,11 @@ import org.springframework.validation.annotation.Validated;
 @AllArgsConstructor
 @Validated
 public class ApiErrorResponse {
-    @JsonProperty("description")
+
     private String description = null;
-
-    @JsonProperty("code")
     private String code = null;
-
-    @JsonProperty("exceptionName")
     private String exceptionName = null;
-
-    @JsonProperty("exceptionMessage")
     private String exceptionMessage = null;
-
-    @JsonProperty("stacktrace")
     @Valid
     private List<String> stacktrace = null;
 
