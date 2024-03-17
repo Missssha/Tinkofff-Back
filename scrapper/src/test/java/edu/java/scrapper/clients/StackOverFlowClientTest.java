@@ -7,7 +7,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.test.StepVerifier;
 
 public class StackOverFlowClientTest {
@@ -51,7 +50,7 @@ public class StackOverFlowClientTest {
         StackOverFlowClient stackOverflowClient = new StackOverFlowClient(baseUrl);
 
         // Assert
-        StepVerifier.create(stackOverflowClient.fetchQuestion(questionId, sort, order))
+        StepVerifier.create(stackOverflowClient.fetchQuestion(questionId))
             // Then
             .expectNextMatches(response -> response.getItems().getFirst().getTitle().equals("title") &&
                 response.getItems().getFirst().getQuestionId() == 1 &&
