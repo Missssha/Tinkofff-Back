@@ -4,8 +4,6 @@ import edu.java.models.Request.LinkUpdateRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import org.apache.kafka.common.errors.ApiException;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -18,8 +16,8 @@ public class BotClient {
         this.webClient = webClient;
     }
 
-    public String updateLink(URI url, List<Long> tgChatIds) throws URISyntaxException {
-        LinkUpdateRequest linkUpdateRequest = new LinkUpdateRequest(1L, url, "Обновление ссылки", tgChatIds);
+    public String updateLink(URI url, List<Long> tgChatIds, String description) throws URISyntaxException {
+        LinkUpdateRequest linkUpdateRequest = new LinkUpdateRequest(1L, url, description, tgChatIds);
 
         return webClient
             .post()
@@ -27,7 +25,6 @@ public class BotClient {
             .body(Mono.just(linkUpdateRequest), LinkUpdateRequest.class)
             .header("Accept", "application/json")
             .retrieve()
-            .onStatus(HttpStatus.BAD_REQUEST::equals, response -> Mono.error(new ApiException()))
             .bodyToMono(String.class)
             .block();
     }

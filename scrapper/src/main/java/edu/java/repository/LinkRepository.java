@@ -1,6 +1,8 @@
 package edu.java.repository;
 
 import edu.java.dto.Link;
+import edu.java.dto.LinkSof;
+import java.sql.Timestamp;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -15,22 +17,14 @@ public class LinkRepository {
     @Transactional
     public int add(Link entity) {
         try {
-            String sql1 =
-                "insert into link(url, last_check_time, created_at) "
-                    + "values(:url,:lastCheckTime,:createdAt)";
-
-            jdbcClient.sql(sql1)
+            String sql =
+                "insert into link(url, chat_id, last_check_time,created_at) "
+                    + "values(:url,:chatId,:CheckTime,:createdAt)";
+            jdbcClient.sql(sql)
                 .param("url", entity.getUrl().toString())
-                .param("lastCheckTime", entity.getLastCheckTime())
-                .param("createdAt", entity.getCreatedAt())
-                .update();
-
-            String sql2 =
-                "insert into chat_link(chat_id, link_id)"
-                    + "values(:chatId, :linkId)";
-            jdbcClient.sql(sql2)
                 .param("chatId", entity.getChatId())
-                .param("linkId", entity.getId())
+                .param("CheckTime", entity.getLastCheckTime())
+                .param("createdAt", entity.getCreatedAt())
                 .update();
 
         } catch (Exception e) {
@@ -61,7 +55,45 @@ public class LinkRepository {
 
     @Transactional(readOnly = true)
     public List<Link> findUnUpdatedLinks() {
-        String sql = "select * from link where EXTRACT(SECOND FROM (now() - last_check_time )) > 30";
+        String sql = "select * from link where EXTRACT(SECOND FROM (now() -last_check_time )) > 30";
         return jdbcClient.sql(sql).query(Link.class).list();
     }
+
+    @Transactional
+    public void updateLinkLastCheckTimeById(Long id, Timestamp lastCheckTime) {
+        String sql =
+            "update link set  last_check_time = (:lastCheckTime) where id = :link_id";
+        jdbcClient.sql(sql)
+            .param("link_id", id)
+            .param("lastCheckTime", lastCheckTime)
+            .update();
+    }
+
+    @Transactional(readOnly = true)
+    public LinkSof getLinkPropertiesById(Long id) {
+        String sql = "select * from links_sof where link_id = ? ";
+        return jdbcClient.sql(sql).param(1, id).query(LinkSof.class).single();
+    }
+
+    @Transactional
+    public void updateCountOfCommentsById(Long id, Long count) {
+        String sql =
+            "update links_sof set  \"countOfComments\" = ? where link_id = ?";
+        jdbcClient.sql(sql)
+            .param(1, count)
+            .param(2, id)
+            .update();
+
+    }
+
+    @Transactional
+    public void updateCountOfAnswersById(Long id, Long count) {
+        String sql =
+            "update links_sof set \"countOfAnswers\" = ? where link_id = ?";
+        jdbcClient.sql(sql)
+            .param(1, count)
+            .param(2, id)
+            .update();
+    }
+
 }
