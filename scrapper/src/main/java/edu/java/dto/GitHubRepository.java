@@ -10,11 +10,9 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public class GitHubRepository {
-    @JsonProperty("id")
     private Long id;
-    @JsonProperty("name")
     private String name;
-    @JsonProperty("defaultBranch")
+    @JsonProperty("default_branch")
     private String defaultBranch;
     @JsonProperty("pushed_at")
     private Timestamp lastPush;

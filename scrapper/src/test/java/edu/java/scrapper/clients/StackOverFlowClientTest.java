@@ -14,7 +14,7 @@ public class StackOverFlowClientTest {
 
     @BeforeAll
     public static void setUp() {
-        wireMockServer = new WireMockServer(8000);
+        wireMockServer = new WireMockServer(8040);
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
     }

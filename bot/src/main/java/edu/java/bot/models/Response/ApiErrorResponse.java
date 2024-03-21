@@ -15,12 +15,12 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class ApiErrorResponse {
 
-    private String description = null;
-    private String code = null;
-    private String exceptionName = null;
-    private String exceptionMessage = null;
+    private String description;
+    private String code;
+    private String exceptionName;
+    private String exceptionMessage;
     @Valid
-    private List<String> stacktrace = null;
+    private List<String> stacktrace;
 
     public ApiErrorResponse description(String description) {
         this.description = description;

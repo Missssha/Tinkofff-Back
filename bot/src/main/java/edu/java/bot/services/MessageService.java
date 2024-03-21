@@ -16,12 +16,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import jdk.jfr.Registered;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
-@Registered
 public class MessageService {
     public static final String DO_REGISTRATION_MESSAGE = "Необходимо зарегистрироваться.";
     public static final String INVALID_URI_MESSAGE = "Неверно указан URI.";
@@ -77,16 +75,16 @@ public class MessageService {
                 }
                 throw new URISyntaxException(text, INVALID_FOR_TRACK_SITE_MESSAGE);
             } else {
-                throw new URISyntaxException(text, INVALID_COMMAND_MESSAGE);
+                return INVALID_COMMAND_MESSAGE;
             }
         } catch (URISyntaxException e) {
             return e.getReason();
-        } catch (MalformedURLException ex) {
-            return ex.getMessage();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private String processStateUserMessage(User user, URI uri) throws MalformedURLException {
+    public String processStateUserMessage(User user, URI uri) throws MalformedURLException {
         if (user.getState().equals(SessionState.WAIT_URI_FOR_TRACKING)) {
             return prepareWaitTrackingMessage(user, uri);
         }
@@ -113,13 +111,13 @@ public class MessageService {
         return INVALID_FOR_TRACK_SITE_MESSAGE;
     }
 
-    private boolean updateUserTrackingSites(User user, URI uri) throws MalformedURLException {
+    public boolean updateUserTrackingSites(User user, URI uri) throws MalformedURLException {
         List<URI> trackSites = new ArrayList<>(user.getSites());
 
         try {
             new ScrapperClient(WebClient.builder().build()).addLinkById(
                 user.getId(),
-                new AddLinkRequest().link(uri)
+                new AddLinkRequest().setLink(uri)
             ); //TODO extract ScrapperClient
             trackSites.add(uri);
             updateTrackSitesAndCommit(user, trackSites);
@@ -129,7 +127,7 @@ public class MessageService {
         }
     }
 
-    private boolean deleteTrackingSites(User user, URI uri) {
+    public boolean deleteTrackingSites(User user, URI uri) {
         List<URI> trackSites = new ArrayList<>(user.getSites());
         if (!trackSites.contains(uri)) {
             return false;
@@ -140,7 +138,7 @@ public class MessageService {
         return true;
     }
 
-    private void updateTrackSitesAndCommit(User user, List<URI> trackSites) {
+    public void updateTrackSitesAndCommit(User user, List<URI> trackSites) {
         user.setSites(trackSites);
         user.setState(SessionState.BASE_STATE);
         userRepository.saveUser(user);

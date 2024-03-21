@@ -50,7 +50,7 @@ public abstract class IntegrationTest {
         Connection connection = DriverManager.getConnection(url, username, password);
 
         Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
-        Liquibase liquibase = new liquibase.Liquibase("master.xml", new DirectoryResourceAccessor(path), database);
+        Liquibase liquibase = new Liquibase("master.xml", new DirectoryResourceAccessor(path), database);
 
         liquibase.update(new Contexts(), new LabelExpression());
         return database;

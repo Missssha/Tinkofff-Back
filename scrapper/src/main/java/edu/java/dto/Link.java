@@ -2,6 +2,7 @@ package edu.java.dto;
 
 import java.net.URI;
 import java.sql.Timestamp;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.Setter;
 public class Link {
     private long id;
     private URI url;
-    private long chatId;
     private Timestamp lastCheckTime;
     private Timestamp createdAt;
+    private List<Chat> chats;
 }

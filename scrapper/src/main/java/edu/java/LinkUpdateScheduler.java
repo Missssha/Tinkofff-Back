@@ -10,7 +10,8 @@ import edu.java.service.jdbc.JdbcLinkService;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -37,44 +38,72 @@ public class LinkUpdateScheduler {
     }
 
     @Scheduled(fixedDelayString = "#{scheduler.interval}")
-    public void update() throws InterruptedException, URISyntaxException {
+    public void update() throws URISyntaxException {
         log.info("Update...");
         updateOldLinks();
     }
 
     private void updateOldLinks() throws URISyntaxException {
-        for (Link link : jdbcLinkService.getOldLinks()) {
+        Timestamp now = Timestamp.valueOf(LocalDateTime.now());
+
+        for (Link link : jdbcLinkService.getUnUpdatedLinks()) {
             if (link.getUrl().getHost().equals("github.com")) {
-                updateLinkForGithub(link);
+                updateGithubLink(link, now);
             } else if (link.getUrl().getHost().equals("stackoverflow.com")) {
-                updateLinkForStackOverFlow(link);
+                updateStackOverFlowLink(link, now);
             }
         }
     }
 
-    private void updateLinkForGithub(Link link) throws URISyntaxException {
-        int idName = Integer.parseInt(System.getenv("idName"));
-        int idOfReposName = Integer.parseInt(System.getenv("idReposName"));
-        List<String> fragments = List.of(link.getUrl().toString().split("/"));
-        GitHubRepository rep =
-            gitHubClient.getRepositoryInfo(fragments.get(idName), fragments.get(idOfReposName)).block();
+    private void updateGithubLink(Link link, Timestamp now) throws URISyntaxException {
+        String url = link.getUrl().toString();
+        String owner = extractOwnerName(url);
+        String repoName = extractRepoName(url);
+
+        GitHubRepository rep = gitHubClient.getRepositoryInfo(owner, repoName).block();
         Timestamp lastPush = rep.getLastPush();
+
         if (lastPush.after(link.getLastCheckTime())) {
-            link.setLastCheckTime(Timestamp.valueOf(LocalDateTime.now()));
-            botClient.updateLink(link.getUrl(), List.of(link.getChatId()));
+            botClient.updateLink(link.getUrl(), link.getChats());
+            jdbcLinkService.updateLinkLastCheckTime(link.getId(), now);
         }
     }
 
-    private void updateLinkForStackOverFlow(Link link) {
-        List<String> fragments = List.of(link.getUrl().toString().split("/"));
-        int idOfQuestion = Integer.parseInt(System.getenv("idOfQuestion"));
-        StackOverFlowQuestion
-            question =
-            stackOverFlowClient.fetchQuestion(Long.parseLong(fragments.get(idOfQuestion))).block().getItems()
-                .getFirst();
+    private void updateStackOverFlowLink(Link link, Timestamp now) throws URISyntaxException {
+
+        String path = link.getUrl().getPath();
+        Pattern pattern = Pattern.compile("/questions/(?<id>\\d+)");
+        Matcher matcher = pattern.matcher(path);
+
+        StackOverFlowQuestion question =
+            stackOverFlowClient.fetchQuestion(Long.parseLong(matcher.group("id"))).block().getItems().getFirst();
         Timestamp lastActivity = question.getLastActivityAsTimestamp();
+
         if (lastActivity.after(link.getLastCheckTime())) {
-            link.setLastCheckTime(Timestamp.valueOf(LocalDateTime.now()));
+            botClient.updateLink(link.getUrl(), link.getChats());
+            jdbcLinkService.updateLinkLastCheckTime(link.getId(), now);
+        }
+    }
+
+    public static String extractOwnerName(String githubUrl) {
+        Pattern pattern = Pattern.compile("github.com/(?<owner>[^/]+)/");
+        Matcher matcher = pattern.matcher(githubUrl);
+
+        if (matcher.find()) {
+            return matcher.group("owner");
+        } else {
+            return null;
+        }
+    }
+
+    public static String extractRepoName(String githubUrl) {
+        Pattern pattern = Pattern.compile("/(?<repo>[^/]+)$");
+        Matcher matcher = pattern.matcher(githubUrl);
+
+        if (matcher.find()) {
+            return matcher.group("repo");
+        } else {
+            return null;
         }
     }
 }

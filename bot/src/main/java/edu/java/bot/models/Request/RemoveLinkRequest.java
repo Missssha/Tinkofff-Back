@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @Getter
 public class RemoveLinkRequest {
-    private URI link = null;
+    private URI link;
 
     public RemoveLinkRequest link(URI link) {
         this.link = link;

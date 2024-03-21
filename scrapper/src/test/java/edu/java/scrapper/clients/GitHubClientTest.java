@@ -15,7 +15,7 @@ public class GitHubClientTest {
 
     @BeforeAll
     public static void setUp() {
-        wireMockServer = new WireMockServer(8000);
+        wireMockServer = new WireMockServer(8040);
         wireMockServer.start();
         WireMock.configureFor("localhost", wireMockServer.port());
     }
@@ -36,7 +36,7 @@ public class GitHubClientTest {
             .willReturn(WireMock.aResponse()
                 .withStatus(200)
                 .withHeader("Content-Type", "application/json")
-                .withBody("{\"id\":756021540,\"name\":\"testRepo\",\"defaultBranch\":\"master\"}")
+                .withBody("{\"id\":756021540,\"name\":\"testRepo\",\"default_branch\":\"master\"}")
             ));
 
         String baseUrl = "http://localhost:" + wireMockServer.port();
