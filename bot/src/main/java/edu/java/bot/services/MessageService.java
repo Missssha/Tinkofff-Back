@@ -95,7 +95,7 @@ public class MessageService {
         return INVALID_COMMAND_MESSAGE;
     }
 
-    private String prepareWaitTrackingMessage(User user, URI uri) throws MalformedURLException {
+    private String prepareWaitTrackingMessage(User user, URI uri) {
         if (urlProcessor.isValidUrl(uri)) {
             return (updateUserTrackingSites(user, uri)) ? SUCCESS_TRACK_SITE_MESSAGE
                 : DUPLICATE_TRACKING_MESSAGE;
@@ -111,7 +111,7 @@ public class MessageService {
         return INVALID_FOR_TRACK_SITE_MESSAGE;
     }
 
-    public boolean updateUserTrackingSites(User user, URI uri) throws MalformedURLException {
+    public boolean updateUserTrackingSites(User user, URI uri) {
         List<URI> trackSites = new ArrayList<>(user.getSites());
 
         try {

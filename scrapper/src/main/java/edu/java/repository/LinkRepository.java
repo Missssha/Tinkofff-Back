@@ -15,8 +15,7 @@ public class LinkRepository {
     private final JdbcClient jdbcClient;
 
     @Transactional
-    public int add(Link entity) {
-        try {
+    public void add(Link entity) {
             String sqlFromLink =
                 "insert into link(url, last_check_time, created_at) "
                     + "values(:url,:last_check_time,:createdAt)";
@@ -38,29 +37,15 @@ public class LinkRepository {
                 .param("chatId", chatId)
                 .param("linkId", entity.getId())
                 .update();
-
-        } catch (Exception e) {
-            return -1;
-        }
-        return 1;
     }
 
     @Transactional
-    public int remove(Long id) {
-        try {
+    public void remove(Long id) {
             String sqlRemoveLink = "delete from link where id = ?";
-            int count = jdbcClient.sql(sqlRemoveLink).param(1, id).update();
+            jdbcClient.sql(sqlRemoveLink).param(1, id).update();
 
             String sqlRemoveChatLink = "delete from chat_link where link_id = ?";
             jdbcClient.sql(sqlRemoveChatLink).param(1, id).update();
-
-            if (count == 0) {
-                throw new RuntimeException("link not found");
-            }
-        } catch (RuntimeException e) {
-            return -1;
-        }
-        return 1;
     }
 
     @Transactional(readOnly = true)
@@ -81,7 +66,8 @@ public class LinkRepository {
 
     @Transactional(readOnly = true)
     public List<Link> getUnUpdatedLinks() {
-        String sql = "select * from link where EXTRACT(SECOND FROM (now() - last_check_time )) > 30";
+        String sql = "select * from link where EXTRACT(SECOND FROM (now() - last_check_time )) > 30 "
+            + "ORDER BY last_check_time ASC LIMIT 100";
         return jdbcClient.sql(sql).query(Link.class).list();
     }
 }

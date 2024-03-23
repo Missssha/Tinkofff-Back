@@ -18,4 +18,8 @@ public class Link {
     private Timestamp lastCheckTime;
     private Timestamp createdAt;
     private List<Chat> chats;
+
+    public Link(URI url) {
+        this.url = url;
+    }
 }

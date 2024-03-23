@@ -40,7 +40,7 @@ public class TgChatApiController implements TgChatApi {
         Long id
     ) {
 
-        Chat chat = new Chat();
+        Chat chat = new Chat(id);
 
         jdbcChatService.addChat(chat);
 

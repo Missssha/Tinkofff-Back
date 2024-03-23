@@ -15,20 +15,19 @@ public class ChatRepository {
 
     @Transactional
     public void add(Chat chatEntity) {
-        String sql =
-            "insert into chat(chat_id) values(:chatId)";
+        String sql = "insert into chat(chat_id) values(:chatId)";
         jdbcClient.sql(sql)
             .param("chatId", chatEntity.getChatId())
             .update();
     }
 
     @Transactional
-    public void remove(Long chatId) {
-        String sql = "delete from chat where chat_id = ?";
-        int count = jdbcClient.sql(sql).param(1, chatId).update();
-        if (count == 0) {
-            throw new RuntimeException("chat not found");
-        }
+    public void remove(Long id) {
+        String sqlRemoveChat = "delete from chat where chat_id = ?";
+        jdbcClient.sql(sqlRemoveChat).param(1, id).update();
+
+        String sqlRemoveChatLink = "delete from chat_link where chat_id = ?";
+        jdbcClient.sql(sqlRemoveChatLink).param(1, id).update();
     }
 
     @Transactional(readOnly = true)

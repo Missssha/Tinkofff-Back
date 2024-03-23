@@ -16,17 +16,29 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public List<Link> getLinks() {
-        return linkRepository.findAll();
+        try {
+            return linkRepository.findAll();
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error getting links");
+        }
     }
 
     @Override
-    public int addLink(Link link) {
-        return linkRepository.add(link);
+    public void addLink(Link link) {
+        try {
+            linkRepository.add(link);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error adding a link");
+        }
     }
 
     @Override
-    public int removeLink(Long id) {
-        return linkRepository.remove(id);
+    public void removeLink(Long id) {
+        try {
+            linkRepository.remove(id);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("link not found");
+        }
     }
 
     @Override

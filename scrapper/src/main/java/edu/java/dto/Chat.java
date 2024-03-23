@@ -14,4 +14,8 @@ public class Chat {
     private long id;
     private long chatId;
     private List<Link> links;
+
+    public Chat(Long id) {
+        this.id = id;
+    }
 }

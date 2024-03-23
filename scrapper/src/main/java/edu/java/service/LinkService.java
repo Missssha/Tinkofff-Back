@@ -7,9 +7,9 @@ import java.util.List;
 public interface LinkService {
     List<Link> getLinks();
 
-    int addLink(Link link);
+    void addLink(Link link);
 
-    int removeLink(Long id);
+    void removeLink(Long id);
 
     void updateLinkLastCheckTime(Long id, Timestamp lastCheckTime);
 

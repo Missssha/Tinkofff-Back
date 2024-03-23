@@ -1,7 +1,5 @@
 package edu.java.controllers;
 
-import edu.java.models.Request.AddLinkRequest;
-import edu.java.models.Request.RemoveLinkRequest;
 import edu.java.models.Response.ApiErrorResponse;
 import edu.java.models.Response.LinkResponse;
 import edu.java.models.Response.ListLinksResponse;
@@ -12,10 +10,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
+import java.io.IOException;
+import java.net.URI;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,12 +40,10 @@ public interface LinksApi {
                     produces = {"application/json"},
                     consumes = {"application/json"},
                     method = RequestMethod.DELETE)
-    ResponseEntity<LinkResponse> linksDelete(
+    void linksDelete(
         @Parameter(in = ParameterIn.HEADER, description = "", required = true, schema = @Schema())
-        @RequestHeader(value = "Tg-Chat-Id", required = true) Long tgChatId,
-        @Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid @RequestBody
-        RemoveLinkRequest body
-    );
+        @RequestHeader(value = "Tg-Chat-Id", required = true) Long tgChatId
+    ) throws IOException;
 
     @Operation(summary = "Получить все отслеживаемые ссылки", description = "", tags = {})
     @ApiResponses(value = {
@@ -64,10 +59,7 @@ public interface LinksApi {
     @RequestMapping(value = "/links",
                     produces = {"application/json"},
                     method = RequestMethod.GET)
-    ResponseEntity<ListLinksResponse> linksGet(
-        @Parameter(in = ParameterIn.HEADER, description = "", required = true, schema = @Schema())
-        @RequestHeader(value = "Tg-Chat-Id", required = true) Long tgChatId
-    );
+    void linksGet();
 
     @Operation(summary = "Добавить отслеживание ссылки", description = "", tags = {})
     @ApiResponses(value = {
@@ -84,11 +76,9 @@ public interface LinksApi {
                     produces = {"application/json"},
                     consumes = {"application/json"},
                     method = RequestMethod.POST)
-    ResponseEntity<LinkResponse> linksPost(
+    void linksPost(
         @Parameter(in = ParameterIn.HEADER, description = "", required = true, schema = @Schema())
-        @RequestHeader(value = "Tg-Chat-Id", required = true) Long tgChatId,
-        @Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid @RequestBody
-        AddLinkRequest body
+        @RequestHeader(value = "url", required = true) URI url
     );
 
 }

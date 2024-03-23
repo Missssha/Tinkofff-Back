@@ -7,6 +7,7 @@ import edu.java.dto.Link;
 import edu.java.dto.StackOverFlowQuestion;
 import edu.java.models.BotClient;
 import edu.java.service.jdbc.JdbcLinkService;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -38,24 +39,31 @@ public class LinkUpdateScheduler {
     }
 
     @Scheduled(fixedDelayString = "#{scheduler.interval}")
-    public void update() throws URISyntaxException {
+    public void update() {
         log.info("Update...");
         updateOldLinks();
+
     }
 
-    private void updateOldLinks() throws URISyntaxException {
+    private void updateOldLinks() {
         Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 
         for (Link link : jdbcLinkService.getUnUpdatedLinks()) {
-            if (link.getUrl().getHost().equals("github.com")) {
-                updateGithubLink(link, now);
-            } else if (link.getUrl().getHost().equals("stackoverflow.com")) {
-                updateStackOverFlowLink(link, now);
+            try {
+                URI uri = link.getUrl();
+                String host = uri.getHost();
+                if (host.equals("github.com")) {
+                    updateGithubLink(link, now);
+                } else if (host.equals("stackoverflow.com")) {
+                    updateStackOverFlowLink(link, now);
+                }
+            } catch (URISyntaxException e) {
+                log.error("Некорректный URL-адрес: {}", link.getUrl(), e);
             }
         }
     }
 
-    private void updateGithubLink(Link link, Timestamp now) throws URISyntaxException {
+    private void updateGithubLink(Link link, Timestamp now) {
         String url = link.getUrl().toString();
         String owner = extractOwnerName(url);
         String repoName = extractRepoName(url);

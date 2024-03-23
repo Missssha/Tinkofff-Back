@@ -15,7 +15,11 @@ public class JdbcChatService implements ChatService {
 
     @Override
     public List<Chat> getChats() {
-        return chatRepository.findAll();
+        try {
+            return chatRepository.findAll();
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error getting a chat");
+        }
     }
 
     @Override
@@ -25,6 +29,11 @@ public class JdbcChatService implements ChatService {
 
     @Override
     public void removeChat(Long id) {
-        chatRepository.remove(id);
+        try {
+            chatRepository.remove(id);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("chat not found");
+        }
+
     }
 }
