@@ -23,11 +23,11 @@ public class ChatRepository {
 
     @Transactional
     public void remove(Long id) {
-        String sqlRemoveChat = "delete from chat where chat_id = ?";
-        jdbcClient.sql(sqlRemoveChat).param(1, id).update();
-
         String sqlRemoveChatLink = "delete from chat_link where chat_id = ?";
         jdbcClient.sql(sqlRemoveChatLink).param(1, id).update();
+
+        String sqlRemoveChat = "delete from chat where chat_id = ?";
+        jdbcClient.sql(sqlRemoveChat).param(1, id).update();
     }
 
     @Transactional(readOnly = true)

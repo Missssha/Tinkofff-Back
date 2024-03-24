@@ -16,8 +16,7 @@ public class LinkRepository {
 
     @Transactional
     public void add(Link entity) {
-            String sqlFromLink =
-                "insert into link(url, last_check_time, created_at) "
+            String sqlFromLink = "insert into link(url, last_check_time, created_at) "
                     + "values(:url,:last_check_time,:createdAt)";
 
             jdbcClient.sql(sqlFromLink)
@@ -29,8 +28,7 @@ public class LinkRepository {
             Chat lastChat = entity.getChats().get(entity.getChats().size() - 1);
             long chatId = lastChat.getId();
 
-            String sqlFromChatLink =
-                "insert into chat_link(chat_id, link_id) "
+            String sqlFromChatLink = "insert into chat_link(chat_id, link_id) "
                     + "values(:chatId,:linkId)";
 
             jdbcClient.sql(sqlFromChatLink)
@@ -41,11 +39,11 @@ public class LinkRepository {
 
     @Transactional
     public void remove(Long id) {
-            String sqlRemoveLink = "delete from link where id = ?";
-            jdbcClient.sql(sqlRemoveLink).param(1, id).update();
+        String sqlRemoveChatLink = "delete from chat_link where link_id = ?";
+        jdbcClient.sql(sqlRemoveChatLink).param(1, id).update();
 
-            String sqlRemoveChatLink = "delete from chat_link where link_id = ?";
-            jdbcClient.sql(sqlRemoveChatLink).param(1, id).update();
+        String sqlRemoveLink = "delete from link where id = ?";
+        jdbcClient.sql(sqlRemoveLink).param(1, id).update();
     }
 
     @Transactional(readOnly = true)

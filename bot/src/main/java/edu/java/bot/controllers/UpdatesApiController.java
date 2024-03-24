@@ -1,7 +1,7 @@
 package edu.java.bot.controllers;
 
 import edu.java.bot.models.Request.LinkUpdateRequest;
-import edu.java.bot.services.MessageService;
+import edu.java.bot.services.RestApiService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UpdatesApiController implements UpdatesApi {
-    private final MessageService messageService;
+    private final RestApiService restApiService;
 
     @Autowired
-    public UpdatesApiController(MessageService messageService) {
-        this.messageService = messageService;
+    public UpdatesApiController(RestApiService restApiService) {
+        this.restApiService = restApiService;
     }
 
     public void updatesPost(
@@ -26,13 +26,13 @@ public class UpdatesApiController implements UpdatesApi {
         @Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid
         @RequestBody LinkUpdateRequest body
     ) {
-        messageService.sendNotification(body.getTgChatIds(), body.getUrl(), body.getDescription());
+        restApiService.sendNotification(body.getTgChatIds(), body.getUrl(), body.getDescription());
     }
 
     public void updatesPost(
         @Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid
         @RequestBody LinkUpdateRequest body
     ) {
-        messageService.sendNotification(body.getTgChatIds(), body.getUrl(), body.getDescription());
+        restApiService.sendNotification(body.getTgChatIds(), body.getUrl(), body.getDescription());
     }
 }

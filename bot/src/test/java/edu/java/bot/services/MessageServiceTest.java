@@ -26,8 +26,6 @@ public class MessageServiceTest {
     @Mock
     private UrlProcessor urlProcessor;
     @Mock
-    private TelegramBot telegramBot;
-    @Mock
     private User user;
     @Mock
     private MessageService messageService;
@@ -35,7 +33,7 @@ public class MessageServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        messageService = new MessageService(telegramBot, commandHandler, userService, urlProcessor);
+        messageService = new MessageService(commandHandler, userService, urlProcessor);
     }
 
 

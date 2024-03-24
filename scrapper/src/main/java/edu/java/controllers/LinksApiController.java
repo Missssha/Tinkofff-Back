@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class LinksApiController implements LinksApi {
 
     private final JdbcLinkService jdbcLinkService;
-    private final ObjectMapper objectMapper;
 
     @Autowired
     public LinksApiController(JdbcLinkService jdbcLinkService, ObjectMapper objectMapper) {
         this.jdbcLinkService = jdbcLinkService;
-        this.objectMapper = objectMapper;
     }
 
     public void linksDelete(

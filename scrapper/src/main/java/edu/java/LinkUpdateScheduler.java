@@ -25,17 +25,20 @@ import org.springframework.web.reactive.function.client.WebClient;
 @ConditionalOnProperty(value = "app.scheduler.enable", havingValue = "true", matchIfMissing = true)
 public class LinkUpdateScheduler {
     private final JdbcLinkService jdbcLinkService;
-
-    @Autowired
-    private GitHubClient gitHubClient;
-
-    @Autowired
-    private StackOverFlowClient stackOverFlowClient;
+    private final GitHubClient gitHubClient;
+    private final StackOverFlowClient stackOverFlowClient;
 
     private final BotClient botClient = new BotClient(WebClient.builder().build());
 
-    public LinkUpdateScheduler(JdbcLinkService jdbcLinkService) {
+    @Autowired
+    public LinkUpdateScheduler(
+        JdbcLinkService jdbcLinkService,
+        GitHubClient gitHubClient,
+        StackOverFlowClient stackOverFlowClient
+    ) {
         this.jdbcLinkService = jdbcLinkService;
+        this.gitHubClient = gitHubClient;
+        this.stackOverFlowClient = stackOverFlowClient;
     }
 
     @Scheduled(fixedDelayString = "#{scheduler.interval}")
