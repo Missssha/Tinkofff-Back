@@ -1,7 +1,7 @@
 package edu.java.service.jdbc;
 
 import edu.java.dto.Chat;
-import edu.java.repository.ChatRepository;
+import edu.java.repository.jdbc.ChatRepository;
 import edu.java.service.ChatService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
