@@ -17,6 +17,9 @@ app:
     timeout: 1
 
 spring:
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     enabled: false
   application:
