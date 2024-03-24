@@ -1,7 +1,7 @@
-package edu.java.scrapper.service;
+package edu.java.scrapper.service.jdbc;
 
 import edu.java.dto.Link;
-import edu.java.repository.LinkRepository;
+import edu.java.repository.jdbc.LinkRepository;
 import edu.java.service.jdbc.JdbcLinkService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

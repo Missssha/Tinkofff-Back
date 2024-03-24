@@ -1,7 +1,7 @@
-package edu.java.scrapper.service;
+package edu.java.scrapper.service.jdbc;
 
 import edu.java.dto.Chat;
-import edu.java.repository.ChatRepository;
+import edu.java.repository.jdbc.ChatRepository;
 import edu.java.service.jdbc.JdbcChatService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
