@@ -2,7 +2,7 @@ package edu.java.scrapper.repository;
 
 import edu.java.dto.Chat;
 import edu.java.dto.Link;
-import edu.java.repository.JdbcLinkRepository;
+import edu.java.repository.jdbc.JdbcLinkRepository;
 import edu.java.scrapper.IntegrationTest;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.Assert.assertEquals;
+
 @SpringBootTest
 public class JdbcLinkRepositoryTest extends IntegrationTest {
 
@@ -37,6 +38,5 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
         assertEquals(new URI("https://api.github.com/"), links.get(0).getUrl());
         linkRepository.remove(1L);
     }
-
 
 }
