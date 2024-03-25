@@ -1,7 +1,7 @@
 package edu.java.scrapper.service;
 
 import edu.java.dto.Chat;
-import edu.java.repository.ChatRepository;
+import edu.java.repository.JdbcChatRepository;
 import edu.java.service.jdbc.JdbcChatService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class JdbcChatServiceTest {
 
     @Mock
-    private ChatRepository chatRepository;
+    private JdbcChatRepository chatRepository;
 
     @InjectMocks
     private JdbcChatService chatService;

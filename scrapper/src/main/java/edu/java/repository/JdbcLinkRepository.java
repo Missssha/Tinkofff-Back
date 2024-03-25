@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
-public class LinkRepository {
+public class JdbcLinkRepository {
     private final JdbcClient jdbcClient;
 
     @Transactional

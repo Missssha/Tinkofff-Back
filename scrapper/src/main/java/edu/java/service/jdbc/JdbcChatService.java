@@ -1,7 +1,7 @@
 package edu.java.service.jdbc;
 
 import edu.java.dto.Chat;
-import edu.java.repository.ChatRepository;
+import edu.java.repository.JdbcChatRepository;
 import edu.java.service.ChatService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JdbcChatService implements ChatService {
 
-    private final ChatRepository chatRepository;
+    private final JdbcChatRepository chatRepository;
 
     @Override
     public List<Chat> getChats() {

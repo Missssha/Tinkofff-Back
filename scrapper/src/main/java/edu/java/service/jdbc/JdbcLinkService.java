@@ -1,7 +1,7 @@
 package edu.java.service.jdbc;
 
 import edu.java.dto.Link;
-import edu.java.repository.LinkRepository;
+import edu.java.repository.JdbcLinkRepository;
 import edu.java.service.LinkService;
 import java.sql.Timestamp;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
 
-    private final LinkRepository linkRepository;
+    private final JdbcLinkRepository linkRepository;
 
     @Override
     public List<Link> getLinks() {

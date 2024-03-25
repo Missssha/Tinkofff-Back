@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
-public class ChatRepository {
+public class JdbcChatRepository {
     private final JdbcClient jdbcClient;
 
     @Transactional
