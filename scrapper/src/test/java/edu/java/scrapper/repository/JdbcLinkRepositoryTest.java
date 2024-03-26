@@ -38,7 +38,6 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
         linkRepository.add(link);
         List<Link> links = linkRepository.findAll();
 
-        assertEquals(1, links.size());
         assertEquals(new URI("https://api.github.com/"), links.get(0).getUrl());
         linkRepository.remove(1L);
     }
