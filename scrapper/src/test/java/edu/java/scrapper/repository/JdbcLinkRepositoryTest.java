@@ -23,7 +23,6 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     private JdbcLinkRepository linkRepository;
 
     @Test
-    @Transactional
     @Rollback
     public void testAdding() throws URISyntaxException {
         Link link = new Link();

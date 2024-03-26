@@ -17,7 +17,6 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
     private JdbcChatRepository chatRepository;
 
     @Test
-    @Transactional
     @Rollback
     public void testAdding() {
         Chat chat = new Chat();
