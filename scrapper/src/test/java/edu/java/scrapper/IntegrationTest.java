@@ -11,6 +11,7 @@ import liquibase.LabelExpression;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
+import liquibase.database.core.PostgresDatabase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.DirectoryResourceAccessor;
@@ -44,12 +45,17 @@ public abstract class IntegrationTest {
         String username = c.getUsername();
         String password = c.getPassword();
 
-        Path path = new File(".").toPath().toAbsolutePath()
-            .getParent().getParent().resolve("migrations");
+        Path path = new File(".")
+            .toPath()
+            .toAbsolutePath()
+            .getParent()
+            .getParent()
+            .resolve("migrations");
 
         Connection connection = DriverManager.getConnection(url, username, password);
 
-        Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+        Database database = new PostgresDatabase();
+        database.setConnection(new JdbcConnection(connection));
         Liquibase liquibase = new Liquibase("master.xml", new DirectoryResourceAccessor(path), database);
 
         liquibase.update(new Contexts(), new LabelExpression());

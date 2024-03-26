@@ -25,7 +25,7 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
         chatRepository.add(chat);
         List<Chat> chats = chatRepository.findAll();
 
-        assertEquals(1, chats.get(0).getId());
+        assertEquals(1L, chats.get(0).getChatId());
         chatRepository.remove(1L);
     }
 
