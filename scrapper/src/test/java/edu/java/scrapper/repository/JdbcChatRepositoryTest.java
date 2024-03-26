@@ -7,6 +7,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
@@ -15,6 +17,8 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
     private JdbcChatRepository chatRepository;
 
     @Test
+    @Transactional
+    @Rollback
     public void testAdding() {
         Chat chat = new Chat();
         chat.setChatId(1L);
