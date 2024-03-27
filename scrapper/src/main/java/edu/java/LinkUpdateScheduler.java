@@ -27,7 +27,6 @@ public class LinkUpdateScheduler {
     private final JdbcLinkService jdbcLinkService;
     private final GitHubClient gitHubClient;
     private final StackOverFlowClient stackOverFlowClient;
-
     private final BotClient botClient = new BotClient(WebClient.builder().build());
 
     @Autowired
