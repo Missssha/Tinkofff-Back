@@ -22,6 +22,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     @Autowired
     private JdbcLinkRepository linkRepository;
 
+
     @Test
     @Transactional
     @Rollback

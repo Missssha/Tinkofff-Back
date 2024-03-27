@@ -16,6 +16,7 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
     @Autowired
     private JdbcChatRepository chatRepository;
 
+
     @Test
     @Transactional
     @Rollback

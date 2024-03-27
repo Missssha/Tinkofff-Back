@@ -7,13 +7,15 @@ app:
     force-check-delay: 10s
 
 spring:
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     enabled: false
   application:
     name: scrapper
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-
   datasource:
     hikari:
       username: postgres
