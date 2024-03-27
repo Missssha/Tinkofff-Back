@@ -32,37 +32,34 @@ public abstract class IntegrationTest {
             .withPassword("postgres");
         POSTGRES.start();
 
-        runMigrations(POSTGRES);
-    }
-
-    private static void runMigrations(JdbcDatabaseContainer<?> c) {
         try {
-            String jdbcUrl = c.getJdbcUrl();
-            String username = c.getUsername();
-            String password = c.getPassword();
-
-            Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-            Database database = new PostgresDatabase();
-            database.setConnection(new JdbcConnection(connection));
-
-            Path migrationsPath = new File(".")
-                .toPath()
-                .toAbsolutePath()
-                .getParent()
-                .getParent()
-                .resolve("migrations");
-
-            Liquibase liquibase = new Liquibase(
-                "master.xml",
-                new DirectoryResourceAccessor(migrationsPath),
-                database
-            );
-            liquibase.update(new Contexts());
-        } catch (SQLException | liquibase.exception.LiquibaseException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
+            Database var = runMigrations(POSTGRES);
+        } catch (SQLException | LiquibaseException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    protected static Database runMigrations(JdbcDatabaseContainer<?> c)
+        throws SQLException, LiquibaseException, FileNotFoundException {
+        String url = c.getJdbcUrl();
+        String username = c.getUsername();
+        String password = c.getPassword();
+
+        Path path = new File(".")
+            .toPath()
+            .toAbsolutePath()
+            .getParent()
+            .getParent()
+            .resolve("migrations");
+
+        Connection connection = DriverManager.getConnection(url, username, password);
+
+        Database database = new PostgresDatabase();
+        database.setConnection(new JdbcConnection(connection));
+        Liquibase liquibase = new Liquibase("master.xml", new DirectoryResourceAccessor(path), database);
+
+        liquibase.update(new Contexts(), new LabelExpression());
+        return database;
     }
 
     @DynamicPropertySource
