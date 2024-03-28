@@ -1,6 +1,7 @@
 CREATE TABLE chat
 (
-    id              BIGINT                  NOT NULL PRIMARY KEY
+    id              BIGINT                  NOT NULL PRIMARY KEY,
+    chat_id         BIGINT                  NOT NULL
 );
 /**/
 CREATE TABLE link
@@ -9,7 +10,6 @@ CREATE TABLE link
     url             text                     not null,
     last_check_time timestamp with time zone not null,
     created_at      timestamp with time zone not null,
-    created_by      text                     not null,
 
 
     PRIMARY KEY (id),

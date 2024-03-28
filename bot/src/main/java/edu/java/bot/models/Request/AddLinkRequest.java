@@ -16,6 +16,11 @@ import org.springframework.validation.annotation.Validated;
 public class AddLinkRequest {
     private URI link = null;
 
+    public AddLinkRequest setLink(URI link) {
+        this.link = link;
+        return this;
+    }
+
     @Schema(description = "")
     public URI getLink() {
         return link;

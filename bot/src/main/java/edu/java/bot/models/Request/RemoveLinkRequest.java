@@ -1,6 +1,5 @@
 package edu.java.bot.models.Request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.URI;
 import java.util.Objects;
 import lombok.Getter;
@@ -14,8 +13,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @Getter
 public class RemoveLinkRequest {
-    @JsonProperty("link")
-    private URI link = null;
+    private URI link;
 
     public RemoveLinkRequest link(URI link) {
         this.link = link;

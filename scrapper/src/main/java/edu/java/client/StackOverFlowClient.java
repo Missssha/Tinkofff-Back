@@ -10,15 +10,15 @@ public class StackOverFlowClient {
 
     private WebClient webClient;
     private final WebClient.Builder webClientBuilder = WebClient.builder();
-    private static final String URL = "/questions/%d?order=%s&sort=%s&site=stackoverflow";
+    private static final String URL = "/questions/%d?site=stackoverflow";
 
     public StackOverFlowClient(String baseurl) {
         webClient = webClientBuilder.baseUrl(baseurl)
             .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE).build();
     }
 
-    public Mono<StackOverFlowResponse> fetchQuestion(long questionId, String sort, String order) {
-        String apiUrl = String.format(URL, questionId, sort, order);
+    public Mono<StackOverFlowResponse> fetchQuestion(long questionId) {
+        String apiUrl = String.format(URL, questionId);
 
         return webClient
             .get()
