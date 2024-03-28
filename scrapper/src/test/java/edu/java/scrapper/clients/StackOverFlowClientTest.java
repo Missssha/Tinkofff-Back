@@ -52,7 +52,7 @@ public class StackOverFlowClientTest {
         // Assert
         StepVerifier.create(stackOverflowClient.fetchQuestion(questionId))
             // Then
-            .expectNextMatches(response -> response.getItems().getFirst().getTitle().equals("title") &&
+            .expectNextMatches(response -> response.getItems().get(0).getTitle().equals("title") &&
                 response.getItems().getFirst().getQuestionId() == 1 &&
                 response.getItems().getFirst().isAnswered()
             )

@@ -87,7 +87,7 @@ public class LinkUpdateScheduler {
         Matcher matcher = pattern.matcher(path);
 
         StackOverFlowQuestion question =
-            stackOverFlowClient.fetchQuestion(Long.parseLong(matcher.group("id"))).block().getItems().getFirst();
+            stackOverFlowClient.fetchQuestion(Long.parseLong(matcher.group("id"))).block().getItems().get(0);
         Timestamp lastActivity = question.getLastActivityAsTimestamp();
 
         if (lastActivity.after(link.getLastCheckTime())) {
