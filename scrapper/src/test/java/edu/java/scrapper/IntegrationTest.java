@@ -33,8 +33,7 @@ public abstract class IntegrationTest {
         POSTGRES = new PostgreSQLContainer<>("postgres:16")
             .withDatabaseName("scrapper")
             .withUsername("postgres")
-            .withPassword("postgres")
-            .withUrlParam("jdbcUrl", "jdbc:postgresql://localhost:5432");
+            .withPassword("postgres");
         POSTGRES.start();
 
         try {

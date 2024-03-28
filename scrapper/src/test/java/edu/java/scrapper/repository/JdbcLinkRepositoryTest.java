@@ -33,13 +33,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     @Test
     @Transactional
     @Rollback
-    public void testAdding() throws URISyntaxException, SQLException, FileNotFoundException, LiquibaseException {
-        IntegrationTest.runMigrations(POSTGRES);
-        Database database = getDatabase(getConnection(
-            POSTGRES.getJdbcUrl(),
-            POSTGRES.getUsername(),
-            POSTGRES.getPassword()));
-        assertThat(database).isNotNull();
+    public void testAdding() throws URISyntaxException{
 
         Link link = new Link();
         Chat chat = new Chat(1L);
