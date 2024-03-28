@@ -10,7 +10,6 @@ import org.springframework.validation.annotation.Validated;
 
 @Configuration
 @Validated
-@ConfigurationProperties(prefix = "spring.datasource.hikari", ignoreUnknownFields = false)
 public class SpringJdbcConfig{
     @Value("${spring.datasource.hikari.jdbcUrl}")
     private String jdbcUrl;
