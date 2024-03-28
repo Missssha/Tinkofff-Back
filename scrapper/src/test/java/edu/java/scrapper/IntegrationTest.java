@@ -71,9 +71,9 @@ public abstract class IntegrationTest {
 
     @DynamicPropertySource
     static void jdbcProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.hikari.jdbcUrl", POSTGRES::getJdbcUrl);
-        registry.add("spring.datasource.hikari.username", POSTGRES::getUsername);
-        registry.add("spring.datasource.hikari.password", POSTGRES::getPassword);
+        registry.add("spring.datasource.url", POSTGRES::getJdbcUrl);
+        registry.add("spring.datasource.username", POSTGRES::getUsername);
+        registry.add("spring.datasource.password", POSTGRES::getPassword);
 
     }
 
