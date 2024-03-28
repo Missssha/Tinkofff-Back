@@ -13,7 +13,12 @@ public class ExampleIntegrationTest extends IntegrationTest {
 
     @Test
     public void testLiquibaseMigration() throws SQLException, FileNotFoundException, LiquibaseException {
-        Database database = IntegrationTest.runMigrations(POSTGRES);
+        IntegrationTest.runMigrations(POSTGRES);
+
+        Database database = getDatabase(getConnection(
+            POSTGRES.getJdbcUrl(),
+            POSTGRES.getUsername(),
+            POSTGRES.getPassword()));
 
         assertThat(database).isNotNull();
     }

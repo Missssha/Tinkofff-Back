@@ -28,7 +28,11 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
     @Transactional
     @Rollback
     public void testAdding() throws SQLException, FileNotFoundException, LiquibaseException {
-        Database database = IntegrationTest.runMigrations(POSTGRES);
+        IntegrationTest.runMigrations(POSTGRES);
+        Database database = getDatabase(getConnection(
+            POSTGRES.getJdbcUrl(),
+            POSTGRES.getUsername(),
+            POSTGRES.getPassword()));
         assertThat(database).isNotNull();
 
         Chat chat = new Chat();

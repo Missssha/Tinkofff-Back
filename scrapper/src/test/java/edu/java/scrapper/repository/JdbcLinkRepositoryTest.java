@@ -34,7 +34,11 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     @Transactional
     @Rollback
     public void testAdding() throws URISyntaxException, SQLException, FileNotFoundException, LiquibaseException {
-        Database database = IntegrationTest.runMigrations(POSTGRES);
+        IntegrationTest.runMigrations(POSTGRES);
+        Database database = getDatabase(getConnection(
+            POSTGRES.getJdbcUrl(),
+            POSTGRES.getUsername(),
+            POSTGRES.getPassword()));
         assertThat(database).isNotNull();
 
         Link link = new Link();

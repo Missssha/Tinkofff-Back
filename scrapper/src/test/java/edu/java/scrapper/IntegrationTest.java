@@ -11,18 +11,22 @@ import liquibase.LabelExpression;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
-import liquibase.database.core.PostgresDatabase;
 import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.DirectoryResourceAccessor;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 public abstract class IntegrationTest {
+    @Container
+    @ServiceConnection
     public static PostgreSQLContainer<?> POSTGRES;
 
     static {
@@ -33,33 +37,35 @@ public abstract class IntegrationTest {
         POSTGRES.start();
 
         try {
-            Database var = runMigrations(POSTGRES);
+            runMigrations(POSTGRES);
         } catch (SQLException | LiquibaseException | FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
-    protected static Database runMigrations(JdbcDatabaseContainer<?> c)
+    protected static void runMigrations(JdbcDatabaseContainer<?> c)
         throws SQLException, LiquibaseException, FileNotFoundException {
         String url = c.getJdbcUrl();
         String username = c.getUsername();
         String password = c.getPassword();
 
-        Path path = new File(".")
-            .toPath()
-            .toAbsolutePath()
-            .getParent()
-            .getParent()
-            .resolve("migrations");
+        Path path = new File(".").toPath().toAbsolutePath()
+            .getParent().getParent().resolve("migrations");
 
-        Connection connection = DriverManager.getConnection(url, username, password);
+        Connection connection = getConnection(url, username, password);
+        Database database = getDatabase(connection);
 
-        Database database = new PostgresDatabase();
-        database.setConnection(new JdbcConnection(connection));
-        Liquibase liquibase = new Liquibase("master.xml", new DirectoryResourceAccessor(path), database);
+        Liquibase liquibase = new liquibase.Liquibase("master.xml", new DirectoryResourceAccessor(path), database);
 
         liquibase.update(new Contexts(), new LabelExpression());
-        return database;
+    }
+
+    public static Database getDatabase(Connection connection) throws DatabaseException {
+        return DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
+    }
+
+    public static Connection getConnection(String url, String username, String password) throws SQLException {
+        return DriverManager.getConnection(url, username, password);
     }
 
     @DynamicPropertySource
@@ -67,6 +73,7 @@ public abstract class IntegrationTest {
         registry.add("spring.datasource.url", POSTGRES::getJdbcUrl);
         registry.add("spring.datasource.username", POSTGRES::getUsername);
         registry.add("spring.datasource.password", POSTGRES::getPassword);
+
     }
 
 }
