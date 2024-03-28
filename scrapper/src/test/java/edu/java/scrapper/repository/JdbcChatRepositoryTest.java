@@ -27,7 +27,42 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
 
         assertEquals(1, chats.size());
         assertEquals(1, chats.get(0).getId());
-        chatRepository.remove(1L);
+        chatRepository.remove(chat.getChatId());
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void testRemoving() {
+        Chat chat = new Chat();
+        chat.setChatId(1L);
+        chatRepository.add(chat);
+        chatRepository.remove(chat.getChatId());
+        List<Chat> chats = chatRepository.findAll();
+
+        assertEquals(0, chats.size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void testFinding() {
+        Chat chat1 = new Chat();
+        chat1.setChatId(1L);
+        Chat chat2 = new Chat();
+        chat2.setChatId(2L);
+        Chat chat3 = new Chat();
+        chat3.setChatId(3L);
+
+        chatRepository.add(chat1);
+        chatRepository.add(chat2);
+        chatRepository.add(chat3);
+        List<Chat> chats = chatRepository.findAll();
+
+
+        assertEquals(3, chats.size());
+        chatRepository.remove(chat1.getChatId());
+        chatRepository.remove(chat2.getChatId());
+        chatRepository.remove(chat3.getChatId());
+    }
 }
