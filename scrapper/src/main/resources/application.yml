@@ -20,8 +20,8 @@ spring:
     hikari:
       username: postgres
       password: postgres
-      jdbc-url: jdbc:postgresql://localhost:5432/scrapper
-      driver-class-name: org.postgresql.Driver
+      jdbcUrl: jdbc:postgresql://localhost:5432/scrapper
+      driverClassName: org.postgresql.Driver
 
 
 server:

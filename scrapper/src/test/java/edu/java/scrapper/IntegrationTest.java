@@ -34,7 +34,7 @@ public abstract class IntegrationTest {
             .withDatabaseName("scrapper")
             .withUsername("postgres")
             .withPassword("postgres")
-            .withUrlParam("jdbcUrl", "jdbc:postgresql://localhost:5432/scrapper");
+            .withUrlParam("jdbcUrl", "jdbc:postgresql://localhost:5432");
         POSTGRES.start();
 
         try {

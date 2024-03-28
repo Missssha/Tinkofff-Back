@@ -17,7 +17,18 @@ public record ApplicationConfig(
     @NotEmpty
     String gitUrl,
     @NotEmpty
-    String stackUrl) {
+    String stackUrl,
+    @NotEmpty
+    String username,
+
+    @NotEmpty
+    String password,
+
+    @NotEmpty
+    String jdbcUrl,
+
+    @NotEmpty
+    String driverClassName) {
     public record Scheduler(boolean enable,
                             @NotNull Duration interval,
                             @NotNull Duration forceCheckDelay) {
