@@ -47,6 +47,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     @Transactional
     @Rollback
     public void testRemoving() throws URISyntaxException {
+
         Link link = new Link();
         Chat chat = new Chat(1L);
         List<Chat> chats = new ArrayList<>();
@@ -94,6 +95,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
         assertEquals(2, links.size());
         linkRepository.remove(link1.getId());
         linkRepository.remove(link2.getId());
+
     }
 
 }
