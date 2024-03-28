@@ -9,6 +9,7 @@ import java.util.List;
 import liquibase.database.Database;
 import liquibase.exception.LiquibaseException;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -19,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 public class JdbcChatRepositoryTest extends IntegrationTest {
     @Autowired
+    @Mock
     private JdbcChatRepository chatRepository;
 
 
