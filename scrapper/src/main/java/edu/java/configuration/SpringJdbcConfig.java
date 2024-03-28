@@ -10,19 +10,22 @@ import org.springframework.validation.annotation.Validated;
 @Configuration
 @Validated
 public class SpringJdbcConfig {
-    @Value("${spring.datasource.url}")
+    @Value("${spring.datasource.hikari.jdbcUrl}")
     private String jdbcUrl;
 
-    @Value("${spring.datasource.username}")
+    @Value("${spring.datasource.hikari.username}")
     private String username;
 
-    @Value("${spring.datasource.password}")
+    @Value("${spring.datasource.hikari.password}")
     private String password;
+
+    @Value("${spring.datasource.hikari.driverClassName}")
+    private String driverClassName;
 
     @Bean
     public DataSource myPostgresDataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName("org.postgresql.Driver");
+        ds.setDriverClassName(driverClassName);
         ds.setUrl(jdbcUrl);
         ds.setUsername(username);
         ds.setPassword(password);
