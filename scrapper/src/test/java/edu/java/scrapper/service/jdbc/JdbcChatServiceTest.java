@@ -1,4 +1,4 @@
-package edu.java.scrapper.service;
+package edu.java.scrapper.service.jdbc;
 
 import edu.java.dto.Chat;
 import edu.java.repository.jdbc.ChatRepository;
