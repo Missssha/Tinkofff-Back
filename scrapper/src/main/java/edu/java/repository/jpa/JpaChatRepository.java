@@ -12,4 +12,6 @@ public interface JpaChatRepository extends JpaRepository<Chat, Long> {
     void removeById(Long chatId);
 
     List<Chat> findAll();
+
+    Chat  findChatById(Long id);
 }
