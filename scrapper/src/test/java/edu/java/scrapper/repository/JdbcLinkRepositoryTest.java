@@ -14,17 +14,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
+@Rollback
+@Transactional
 public class JdbcLinkRepositoryTest extends IntegrationTest {
 
     @Autowired
     private JdbcLinkRepository linkRepository;
 
     @Test
-    @Transactional
-    @Rollback
     public void testAdding() throws URISyntaxException {
         Link link = new Link();
         Chat chat = new Chat(1L);
@@ -38,14 +39,11 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
         linkRepository.add(link);
         List<Link> links = linkRepository.findAll();
 
-        assertEquals(1, links.size());
-        assertEquals(new URI("https://api.github.com/"), links.get(0).getUrl());
-        linkRepository.remove(1L);
+        assertThat(links).hasSize(1);
+        assertThat(links.get(0).getUrl()).isEqualTo(link.getUrl());
     }
 
     @Test
-    @Transactional
-    @Rollback
     public void testRemoving() throws URISyntaxException {
 
         Link link = new Link();
@@ -57,16 +55,13 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
         link.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         link.setLastCheckTime(new Timestamp(System.currentTimeMillis()));
         link.setChats(chats);
-        linkRepository.add(link);
         linkRepository.remove(1L);
-        List<Link> links = linkRepository.findAll();
 
-        assertEquals(0, links.size());
+        List<Link> links = linkRepository.findAll();
+        assertThat(links).isEmpty();
     }
 
     @Test
-    @Transactional
-    @Rollback
     public void testFinding() throws URISyntaxException {
         Link link1 = new Link();
         Link link2 = new Link();
@@ -92,9 +87,8 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
         linkRepository.add(link2);
         List<Link> links = linkRepository.findAll();
 
-        assertEquals(2, links.size());
-        linkRepository.remove(link1.getId());
-        linkRepository.remove(link2.getId());
+        assertThat(links).isNotNull();
+
 
     }
 

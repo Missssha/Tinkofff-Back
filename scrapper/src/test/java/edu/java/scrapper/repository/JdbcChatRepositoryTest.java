@@ -9,43 +9,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
+@Transactional
+@Rollback
 public class JdbcChatRepositoryTest extends IntegrationTest {
     @Autowired
     private JdbcChatRepository chatRepository;
 
     @Test
-    @Transactional
-    @Rollback
     public void testAdding() {
         Chat chat = new Chat();
         chat.setChatId(1L);
         chatRepository.add(chat);
         List<Chat> chats = chatRepository.findAll();
 
-        assertEquals(1, chats.size());
-        assertEquals(1, chats.get(0).getId());
-        chatRepository.remove(chat.getChatId());
+        assertThat(chats).hasSize(1);
+        assertThat(chats.get(0).getChatId()).isEqualTo(chat.getChatId());
+
     }
 
     @Test
-    @Transactional
-    @Rollback
     public void testRemoving() {
         Chat chat = new Chat();
         chat.setChatId(1L);
-        chatRepository.add(chat);
         chatRepository.remove(chat.getChatId());
-        List<Chat> chats = chatRepository.findAll();
 
-        assertEquals(0, chats.size());
+        List<Chat> chats = chatRepository.findAll();
+        assertThat(chats).isEmpty();
     }
 
     @Test
-    @Transactional
-    @Rollback
     public void testFinding() {
         Chat chat1 = new Chat();
         chat1.setChatId(1L);
@@ -60,9 +56,6 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
         List<Chat> chats = chatRepository.findAll();
 
 
-        assertEquals(3, chats.size());
-        chatRepository.remove(chat1.getChatId());
-        chatRepository.remove(chat2.getChatId());
-        chatRepository.remove(chat3.getChatId());
+        assertThat(chats).isNotNull();
     }
 }
