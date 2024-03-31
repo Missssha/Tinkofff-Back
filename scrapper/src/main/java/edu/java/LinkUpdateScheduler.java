@@ -6,6 +6,8 @@ import edu.java.dto.GitHubRepository;
 import edu.java.dto.Link;
 import edu.java.dto.StackOverFlowQuestion;
 import edu.java.models.BotClient;
+import edu.java.models.exception.ClientException;
+import edu.java.models.exception.ServerException;
 import edu.java.service.jdbc.JdbcLinkService;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,29 +18,31 @@ import java.util.regex.Pattern;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Log4j2
 @Component
 @ConditionalOnProperty(value = "app.scheduler.enable", havingValue = "true", matchIfMissing = true)
+@EnableRetry
 public class LinkUpdateScheduler {
     private final JdbcLinkService jdbcLinkService;
     private final GitHubClient gitHubClient;
     private final StackOverFlowClient stackOverFlowClient;
-
-    private final BotClient botClient = new BotClient(WebClient.builder().build());
+    private final BotClient botClient;
 
     @Autowired
     public LinkUpdateScheduler(
         JdbcLinkService jdbcLinkService,
         GitHubClient gitHubClient,
-        StackOverFlowClient stackOverFlowClient
+        StackOverFlowClient stackOverFlowClient,
+        BotClient botClient
     ) {
         this.jdbcLinkService = jdbcLinkService;
         this.gitHubClient = gitHubClient;
         this.stackOverFlowClient = stackOverFlowClient;
+        this.botClient = botClient;
     }
 
     @Scheduled(fixedDelayString = "#{scheduler.interval}")
@@ -71,12 +75,16 @@ public class LinkUpdateScheduler {
         String owner = extractOwnerName(url);
         String repoName = extractRepoName(url);
 
-        GitHubRepository rep = gitHubClient.getRepositoryInfo(owner, repoName).block();
-        Timestamp lastPush = rep.getLastPush();
+        try {
+            GitHubRepository rep = gitHubClient.getRepositoryInfo(owner, repoName).block();
+            Timestamp lastPush = rep.getLastPush();
 
-        if (lastPush.after(link.getLastCheckTime())) {
-            botClient.updateLink(link.getUrl(), link.getChats());
-            jdbcLinkService.updateLinkLastCheckTime(link.getId(), now);
+            if (lastPush.after(link.getLastCheckTime())) {
+                botClient.updateLink(link.getUrl(), link.getChats());
+                jdbcLinkService.updateLinkLastCheckTime(link.getId(), now);
+            }
+        } catch (ServerException | ClientException ex) {
+            log.info(ex);
         }
     }
 
@@ -87,7 +95,7 @@ public class LinkUpdateScheduler {
         Matcher matcher = pattern.matcher(path);
 
         StackOverFlowQuestion question =
-            stackOverFlowClient.fetchQuestion(Long.parseLong(matcher.group("id"))).block().getItems().get(0);
+            stackOverFlowClient.fetchQuestion(Long.parseLong(matcher.group("id"))).getItems().get(0);
         Timestamp lastActivity = question.getLastActivityAsTimestamp();
 
         if (lastActivity.after(link.getLastCheckTime())) {

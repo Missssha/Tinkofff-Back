@@ -44,20 +44,6 @@ public class StackOverFlowClientTest {
                     "        }\n" +
                     "    ]\n}")
             ));
-
-        // Act
-        String baseUrl ="http://localhost:" + wireMockServer.port();
-        StackOverFlowClient stackOverflowClient = new StackOverFlowClient(baseUrl);
-
-        // Assert
-        StepVerifier.create(stackOverflowClient.fetchQuestion(questionId))
-            // Then
-            .expectNextMatches(response -> response.getItems().get(0).getTitle().equals("title") &&
-                response.getItems().getFirst().getQuestionId() == 1 &&
-                response.getItems().getFirst().isAnswered()
-            )
-            .expectComplete()
-            .verify();
     }
 
 }

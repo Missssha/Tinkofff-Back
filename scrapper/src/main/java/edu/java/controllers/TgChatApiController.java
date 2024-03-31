@@ -1,12 +1,11 @@
 package edu.java.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.java.dto.Chat;
 import edu.java.service.jdbc.JdbcChatService;
+import io.github.bucket4j.Bucket;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class TgChatApiController implements TgChatApi {
 
     private final JdbcChatService jdbcChatService;
+    private final Bucket bucket;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TgChatApiController.class);
 
     @Autowired
-    public TgChatApiController(JdbcChatService jdbcChatService, ObjectMapper objectMapper, HttpServletRequest request) {
+    public TgChatApiController(JdbcChatService jdbcChatService, Bucket bucket) {
         this.jdbcChatService = jdbcChatService;
+        this.bucket = bucket;
     }
 
     public void tgChatIdDelete(
