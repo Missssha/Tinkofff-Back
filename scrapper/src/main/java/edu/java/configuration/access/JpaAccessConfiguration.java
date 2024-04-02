@@ -15,17 +15,15 @@ import org.springframework.context.annotation.Configuration;
 public class JpaAccessConfiguration {
     @Bean
     public LinkService linkService(
-        JpaLinkRepository linkRepository,
-        JpaChatRepository chatRepository
+        JpaLinkRepository linkRepository
     ) {
-        return new JpaLinkService(linkRepository, chatRepository);
+        return new JpaLinkService(linkRepository);
     }
 
     @Bean
     public ChatService chatService(
-        JpaChatRepository chatRepository,
-        JpaLinkRepository linkRepository
+        JpaChatRepository chatRepository
     ) {
-        return new JpaChatService(chatRepository, linkRepository);
+        return new JpaChatService(chatRepository);
     }
 }
