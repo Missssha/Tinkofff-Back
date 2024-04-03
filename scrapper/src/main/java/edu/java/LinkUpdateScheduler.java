@@ -25,7 +25,6 @@ import org.springframework.stereotype.Component;
 @Log4j2
 @Component
 @ConditionalOnProperty(value = "app.scheduler.enable", havingValue = "true", matchIfMissing = true)
-@EnableRetry
 public class LinkUpdateScheduler {
     private final JdbcLinkService jdbcLinkService;
     private final GitHubClient gitHubClient;

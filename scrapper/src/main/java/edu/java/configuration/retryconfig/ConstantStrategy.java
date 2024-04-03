@@ -11,12 +11,12 @@ import reactor.util.retry.Retry;
 import reactor.util.retry.RetryBackoffSpec;
 
 @Configuration
-@ConditionalOnProperty(prefix = "app", name = "retry-strategy", havingValue = "const")
+@ConditionalOnProperty(prefix = "app.retry", name = "strategy", havingValue = "const")
 public class ConstantStrategy {
-    @Value("${app.retry-max-attempts}")
+    @Value("${app.retry.max-attempts}")
     private int maxAttempts;
 
-    @Value("${app.retry-delay}")
+    @Value("${app.retry.delay}")
     private int delay;
 
     @Autowired

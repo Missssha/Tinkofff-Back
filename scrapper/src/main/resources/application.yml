@@ -5,13 +5,16 @@ app:
     enable: true
     interval: 10s
     force-check-delay: 10s
-  retryOn: server-client
-  retry-strategy: const
-  retry-max-attempts: 3
-  retry-delay: 5
-  refill: 5
-  capacity: 10
-  timeout: 1
+  retry:
+    trigger: server-client
+    strategy: const
+    max-attempts: 3
+    delay: 5
+    statuses: 500, 501, 502, 503
+  bucket:
+    refill: 5
+    capacity: 10
+    timeout: 1
 
 spring:
   liquibase:
