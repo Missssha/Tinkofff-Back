@@ -85,14 +85,34 @@ public class LinkUpdateScheduler {
         String path = link.getUrl().getPath();
         Pattern pattern = Pattern.compile("/questions/(?<id>\\d+)");
         Matcher matcher = pattern.matcher(path);
+        StringBuilder description = new StringBuilder();
 
-        StackOverFlowQuestion question =
-            stackOverFlowClient.fetchQuestion(Long.parseLong(matcher.group("id"))).block().getItems().get(0);
+        StackOverFlowQuestion question = stackOverFlowClient
+            .fetchQuestion(Long.parseLong(matcher.group("id")))
+            .getItems()
+            .get(0);
         Timestamp lastActivity = question.getLastActivityAsTimestamp();
 
         if (lastActivity.after(link.getLastCheckTime())) {
-            botClient.updateLink(link.getUrl(), link.getChats());
+            description.append("обновление данных : ");
             jdbcLinkService.updateLinkLastCheckTime(link.getId(), now);
+
+            if (question.getAnswerCount() > jdbcLinkService.getLinkPropertiesById(link.getId()).getCountOfAnswer()) {
+                description
+                    .append("\n")
+                    .append("появился новый ответ");
+                jdbcLinkService.updateCountOfAnswersById(link.getId(), question.getAnswerCount());
+            }
+
+            if (question.getCommentCount() > jdbcLinkService.getLinkPropertiesById(link.getId()).getCountOfComments()) {
+                description
+                    .append("\n")
+                    .append("появился новый комментарий");
+                jdbcLinkService.updateCountOfCommentsById(link.getId(), question.getCommentCount());
+            }
+
+            botClient.updateLink(link.getUrl(), link.getChats());
+
         }
     }
 
@@ -117,4 +137,6 @@ public class LinkUpdateScheduler {
             return null;
         }
     }
+
+
 }

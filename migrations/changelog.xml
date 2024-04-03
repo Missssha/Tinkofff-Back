@@ -22,7 +22,7 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
-            <column name="url" type="text">
+            <column name="url" type="varchar(128)">
                 <constraints nullable="false" unique="true"/>
             </column>
 
