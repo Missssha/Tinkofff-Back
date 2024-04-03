@@ -25,7 +25,7 @@ public record ApplicationConfig(
 
     @NotNull
     @Bean
-    Bucket bucket,
+    BucketJ bucket,
     @NotEmpty
     String gitUrl,
     @NotEmpty
@@ -34,14 +34,16 @@ public record ApplicationConfig(
                             @NotNull Duration interval,
                             @NotNull Duration forceCheckDelay) {
     }
+
     public record Retry(@NotNull String trigger,
                         @NotNull RetryStrategy strategy,
                         @NotNull int maxAttempts,
                         @NotNull int delay,
                         @NotNull List<Integer> statuses) {
     }
-    public record Bucket(@NotNull int refill,
-                         @NotNull int capacity,
-                         @NotNull int timeout) {
+
+    public record BucketJ(@NotNull int refill,
+                          @NotNull int capacity,
+                          @NotNull int timeout) {
     }
 }
