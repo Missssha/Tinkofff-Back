@@ -1,6 +1,7 @@
 package edu.java.service.jpa;
 
 import edu.java.dto.Link;
+import edu.java.dto.LinkSof;
 import edu.java.repository.jpa.JpaLinkRepository;
 import edu.java.service.LinkService;
 import java.sql.Timestamp;
@@ -42,6 +43,26 @@ public class JpaLinkService implements LinkService {
     @Override
     public List<Link> getUnUpdatedLinks() {
         return jpaLinkRepository.findOldLinks();
+    }
+
+    @Override
+    public void updateLinkLastCheckTimeById(Long id, Timestamp lastCheckTime) {
+
+    }
+
+    @Override
+    public LinkSof getLinkPropertiesById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void updateCountOfCommentsById(Long id, Long count) {
+
+    }
+
+    @Override
+    public void updateCountOfAnswersById(Long id, Long count) {
+
     }
 
 }

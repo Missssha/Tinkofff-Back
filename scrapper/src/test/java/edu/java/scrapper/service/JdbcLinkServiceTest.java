@@ -1,7 +1,7 @@
-package edu.java.scrapper.service.jdbc;
+package edu.java.scrapper.service;
 
 import edu.java.dto.Link;
-import edu.java.repository.jdbc.LinkRepository;
+import edu.java.repository.jdbc.JdbcLinkRepository;
 import edu.java.service.jdbc.JdbcLinkService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 public class JdbcLinkServiceTest {
 
     @Mock
-    private LinkRepository linkRepository;
+    private JdbcLinkRepository linkRepository;
 
     @InjectMocks
     private JdbcLinkService linkService;
