@@ -1,7 +1,7 @@
 package edu.java.configuration.access;
 
-import edu.java.repository.jdbc.ChatRepository;
-import edu.java.repository.jdbc.LinkRepository;
+import edu.java.repository.jdbc.JdbcChatRepository;
+import edu.java.repository.jdbc.JdbcLinkRepository;
 import edu.java.service.ChatService;
 import edu.java.service.LinkService;
 import edu.java.service.jdbc.JdbcChatService;
@@ -15,14 +15,14 @@ import org.springframework.context.annotation.Configuration;
 public class JdbcAccessConfiguration {
     @Bean
     public LinkService linkService(
-        LinkRepository linkRepository
+        JdbcLinkRepository linkRepository
     ) {
         return new JdbcLinkService(linkRepository);
     }
 
     @Bean
     public ChatService chatService(
-        ChatRepository chatRepository
+        JdbcChatRepository chatRepository
     ) {
         return new JdbcChatService(chatRepository);
     }
