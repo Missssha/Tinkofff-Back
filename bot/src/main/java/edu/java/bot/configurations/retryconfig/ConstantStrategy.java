@@ -1,4 +1,4 @@
-package edu.java.configuration.retryconfig;
+package edu.java.bot.configurations.retryconfig;
 
 import java.time.Duration;
 import java.util.List;

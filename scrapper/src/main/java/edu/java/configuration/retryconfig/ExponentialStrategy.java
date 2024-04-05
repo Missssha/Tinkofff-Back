@@ -19,6 +19,9 @@ public class ExponentialStrategy {
     @Value("${app.retry.delay}")
     private int delay;
 
+    @Value("${app.retry.statuses}")
+    List<Integer> statuses;
+
     @Autowired
     private List<RuntimeException> retryOnExceptions;
 

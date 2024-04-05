@@ -8,6 +8,16 @@ spring:
     time-zone: UTC
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  retry:
+    trigger: server-client
+    strategy: const
+    max-attempts: 3
+    delay: 5
+    statuses: 400, 401, 402, 403, 404, 500, 501, 502, 503, 504
+  bucket:
+    refill: 5
+    capacity: 10
+    timeout: 1
 
 server:
   port: 8090

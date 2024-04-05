@@ -1,5 +1,5 @@
 app:
-  database-access-type: jpa
+  database-access-type: jdbc
   gitUrl: https://api.github.com/
   stackUrl: https://api.stackexchange.com/2.3
   scheduler:
@@ -11,7 +11,7 @@ app:
     strategy: const
     max-attempts: 3
     delay: 5
-    statuses: 500, 501, 502, 503
+    statuses: 400, 401, 402, 403, 404, 500, 501, 502, 503, 504
   bucket:
     refill: 5
     capacity: 10

@@ -6,7 +6,7 @@ import edu.java.dto.GitHubRepository;
 import edu.java.dto.Link;
 import edu.java.dto.StackOverFlowQuestion;
 import edu.java.models.BotClient;
-import edu.java.service.jdbc.*;
+import edu.java.service.jdbc.JdbcLinkService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
