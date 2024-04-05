@@ -6,9 +6,7 @@ import edu.java.dto.GitHubRepository;
 import edu.java.dto.Link;
 import edu.java.dto.StackOverFlowQuestion;
 import edu.java.models.BotClient;
-import edu.java.models.exception.ClientException;
-import edu.java.models.exception.ServerException;
-import edu.java.service.jdbc.JdbcLinkService;
+import edu.java.service.jdbc.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
@@ -73,16 +71,12 @@ public class LinkUpdateScheduler {
         String owner = extractOwnerName(url);
         String repoName = extractRepoName(url);
 
-        try {
-            GitHubRepository rep = gitHubClient.getRepositoryInfo(owner, repoName).block();
-            Timestamp lastPush = rep.getLastPush();
+        GitHubRepository rep = gitHubClient.getRepositoryInfo(owner, repoName).block();
+        Timestamp lastPush = rep.getLastPush();
 
-            if (lastPush.after(link.getLastCheckTime())) {
-                botClient.updateLink(link.getUrl(), link.getChats());
-                jdbcLinkService.updateLinkLastCheckTime(link.getId(), now);
-            }
-        } catch (ServerException | ClientException ex) {
-            log.info(ex);
+        if (lastPush.after(link.getLastCheckTime())) {
+            botClient.updateLink(link.getUrl(), link.getChats());
+            jdbcLinkService.updateLinkLastCheckTime(link.getId(), now);
         }
     }
 
@@ -91,14 +85,34 @@ public class LinkUpdateScheduler {
         String path = link.getUrl().getPath();
         Pattern pattern = Pattern.compile("/questions/(?<id>\\d+)");
         Matcher matcher = pattern.matcher(path);
+        StringBuilder description = new StringBuilder();
 
-        StackOverFlowQuestion question =
-            stackOverFlowClient.fetchQuestion(Long.parseLong(matcher.group("id"))).getItems().get(0);
+        StackOverFlowQuestion question = stackOverFlowClient
+            .fetchQuestion(Long.parseLong(matcher.group("id")))
+            .getItems()
+            .get(0);
         Timestamp lastActivity = question.getLastActivityAsTimestamp();
 
         if (lastActivity.after(link.getLastCheckTime())) {
-            botClient.updateLink(link.getUrl(), link.getChats());
+            description.append("обновление данных : ");
             jdbcLinkService.updateLinkLastCheckTime(link.getId(), now);
+
+            if (question.getAnswerCount() > jdbcLinkService.getLinkPropertiesById(link.getId()).getCountOfAnswer()) {
+                description
+                    .append("\n")
+                    .append("появился новый ответ");
+                jdbcLinkService.updateCountOfAnswersById(link.getId(), question.getAnswerCount());
+            }
+
+            if (question.getCommentCount() > jdbcLinkService.getLinkPropertiesById(link.getId()).getCountOfComments()) {
+                description
+                    .append("\n")
+                    .append("появился новый комментарий");
+                jdbcLinkService.updateCountOfCommentsById(link.getId(), question.getCommentCount());
+            }
+
+            botClient.updateLink(link.getUrl(), link.getChats());
+
         }
     }
 
@@ -123,4 +137,6 @@ public class LinkUpdateScheduler {
             return null;
         }
     }
+
+
 }
