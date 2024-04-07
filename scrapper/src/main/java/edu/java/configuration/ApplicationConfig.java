@@ -34,7 +34,9 @@ public record ApplicationConfig(
     AccessType databaseAccessType,
     @NotNull
     @Bean
-    Kafka kafka) {
+    Kafka kafka,
+    @NotNull
+    Boolean useQueue) {
     public record Scheduler(boolean enable,
                             @NotNull Duration interval,
                             @NotNull Duration forceCheckDelay) {
