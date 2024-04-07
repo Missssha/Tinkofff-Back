@@ -1,17 +1,13 @@
-package edu.java.models.Response;
+package response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.springframework.validation.annotation.Validated;
 
-@Validated
 
 public class ListLinksResponse {
     @JsonProperty("links")
-    @Valid
     private List<LinkResponse> links = null;
 
     @JsonProperty("size")
@@ -30,7 +26,6 @@ public class ListLinksResponse {
         return this;
     }
 
-    @Valid
     public List<LinkResponse> getLinks() {
         return links;
     }

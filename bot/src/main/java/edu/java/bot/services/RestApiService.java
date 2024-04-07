@@ -5,12 +5,11 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.models.SessionState;
 import edu.java.bot.repository.UserService;
 import edu.java.bot.users.User;
-import java.net.URI;
-import java.util.List;
 import org.springframework.stereotype.Service;
+import request.LinkUpdateRequest;
 
 @Service
-public class RestApiService {
+public class RestApiService implements RestApiServiceInterface {
     private final TelegramBot telegramBot;
     private final UserService userRepository;
 
@@ -19,15 +18,16 @@ public class RestApiService {
         this.userRepository = userRepository;
     }
 
-    public void sendNotification(List<Long> tgIds, URI url, String description) {
-        for (Long id : tgIds) {
+    public void sendNotification(LinkUpdateRequest linkUpdateRequest) {
+        for (Long id : linkUpdateRequest.getTgChatIds()) {
             try {
                 User user = userRepository.findUserById(id).get();
                 user.setState(SessionState.WAITING_FOR_NOTIFICATION);
                 userRepository.saveUser(user);
                 telegramBot.execute(new SendMessage(
                     id,
-                    "New update from link " + url.toString() + " message: " + description
+                    "New update from link " + linkUpdateRequest.getUrl().toString()
+                        + " message: " + linkUpdateRequest.getDescription()
                 ));
             } catch (Exception ex) {
                 return;

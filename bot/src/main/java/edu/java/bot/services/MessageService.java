@@ -1,10 +1,8 @@
 package edu.java.bot.services;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.models.Request.AddLinkRequest;
 import edu.java.bot.models.ScrapperClient;
 import edu.java.bot.models.SessionState;
-import edu.java.bot.models.exception.ApiException;
 import edu.java.bot.processors.CommandHandler;
 import edu.java.bot.processors.UrlProcessor;
 import edu.java.bot.repository.UserService;
@@ -15,7 +13,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import reactor.util.retry.RetryBackoffSpec;
 
 @Service
 public class MessageService {
@@ -29,6 +27,7 @@ public class MessageService {
     private final CommandHandler commandHandler;
     private final UserService userRepository;
     private final UrlProcessor urlProcessor;
+    private RetryBackoffSpec retryBackoffSpec;
 
     public MessageService(
         CommandHandler commandHandler,
@@ -106,17 +105,10 @@ public class MessageService {
     public boolean updateUserTrackingSites(User user, URI uri) {
         List<URI> trackSites = new ArrayList<>(user.getSites());
 
-        try {
-            new ScrapperClient(WebClient.builder().build()).addLinkById(
-                user.getId(),
-                new AddLinkRequest().setLink(uri)
-            ); //TODO extract ScrapperClient
-            trackSites.add(uri);
-            updateTrackSitesAndCommit(user, trackSites);
-            return true;
-        } catch (ApiException ex) {
-            return false;
-        }
+        new ScrapperClient(retryBackoffSpec);
+        trackSites.add(uri);
+        updateTrackSitesAndCommit(user, trackSites);
+        return true;
     }
 
     public boolean deleteTrackingSites(User user, URI uri) {

@@ -1,23 +1,34 @@
-package edu.java.bot.models.Request;
+package request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.URI;
 import java.util.Objects;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * RemoveLinkRequest
  */
-@Setter
-@Validated
-@Getter
+
 public class RemoveLinkRequest {
-    private URI link;
+    @JsonProperty("link")
+    private URI link = null;
 
     public RemoveLinkRequest link(URI link) {
         this.link = link;
         return this;
+    }
+
+    /**
+     * Get link
+     *
+     * @return link
+     **/
+
+    public URI getLink() {
+        return link;
+    }
+
+    public void setLink(URI link) {
+        this.link = link;
     }
 
     @Override

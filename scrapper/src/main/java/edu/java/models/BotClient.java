@@ -1,20 +1,17 @@
 package edu.java.models;
 
-import edu.java.dto.Chat;
-import edu.java.models.Request.LinkUpdateRequest;
 import edu.java.models.exception.ClientException;
 import edu.java.models.exception.ServerException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import edu.java.service.sender.SenderService;
 import org.apache.kafka.common.errors.ApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.RetryBackoffSpec;
+import request.LinkUpdateRequest;
 
-public class BotClient {
+public class BotClient implements SenderService {
     private final String baseUrl = "http://localhost:8090";
     private final WebClient webClient = WebClient.builder().build();
 
@@ -24,13 +21,9 @@ public class BotClient {
         this.retryBackoffSpec = retryBackoffSpec;
     }
 
-    public String updateLink(URI url, List<Chat> tgChatIds) {
-        List<Long> transformedTgChatIds = new ArrayList<>();
-        for (Chat chat : tgChatIds) {
-            transformedTgChatIds.add(chat.getId());
-        }
-        LinkUpdateRequest linkUpdateRequest = new LinkUpdateRequest(1L, url, "Обновление ссылки", transformedTgChatIds);
-        return webClient
+    @Override
+    public void updateLink(LinkUpdateRequest linkUpdateRequest) {
+        webClient
             .post()
             .uri(baseUrl + "/updates")
             .body(Mono.just(linkUpdateRequest), LinkUpdateRequest.class)

@@ -1,34 +1,39 @@
-package edu.java.bot.models.Request;
+package request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
 
 @Setter
 @Getter
-@Validated
 public class LinkUpdateRequest {
-    private Long id = null;
+    @JsonProperty("id")
+    private Long id;
 
-    private URI url = null;
+    @JsonProperty("url")
+    private URI url;
 
-    private String description = null;
+    @JsonProperty("description")
+    private String description;
 
     @JsonProperty("tgChatIds")
-    @Valid
-    private List<Long> tgChatIds = null;
+    private List<Long> tgChatIds;
 
     public LinkUpdateRequest(Long id, URI url, String description, List<Long> tgChatIds) {
         this.id = id;
         this.url = url;
         this.description = description;
         this.tgChatIds = tgChatIds;
+    }
+
+    public LinkUpdateRequest(Long id, URI url, String description) {
+        this.id = id;
+        this.url = url;
+        this.description = description;
     }
 
     public LinkUpdateRequest id(Long id) {
@@ -60,7 +65,7 @@ public class LinkUpdateRequest {
     }
 
     @Override
-    public boolean equals(java.lang.Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
