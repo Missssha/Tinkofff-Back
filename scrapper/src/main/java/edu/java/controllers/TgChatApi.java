@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +32,7 @@ public interface TgChatApi {
     @RequestMapping(value = "/tg-chat/{id}",
                     produces = {"application/json"},
                     method = RequestMethod.DELETE)
-    ResponseEntity<Void> tgChatIdDelete(
+    void tgChatIdDelete(
         @Parameter(in = ParameterIn.PATH, description = "", required = true, schema = @Schema()) @PathVariable("id")
         Long id
     );
@@ -49,7 +48,7 @@ public interface TgChatApi {
     @RequestMapping(value = "/tg-chat/{id}",
                     produces = {"application/json"},
                     method = RequestMethod.POST)
-    ResponseEntity<Void> tgChatIdPost(
+    void tgChatIdPost(
         @Parameter(in = ParameterIn.PATH, description = "", required = true, schema = @Schema()) @PathVariable("id")
         Long id
     );

@@ -10,6 +10,9 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
+            <column name="chat_id" type="bigint" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
 
         </createTable>
 
@@ -19,7 +22,7 @@
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 
-            <column name="url" type="text">
+            <column name="url" type="varchar(128)">
                 <constraints nullable="false" unique="true"/>
             </column>
 
@@ -30,6 +33,7 @@
             <column name="created_at" type="timestamp with time zone">
                 <constraints nullable="false"/>
             </column>
+
         </createTable>
 
         <createTable tableName="chat_link">
@@ -46,6 +50,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
         <addUniqueConstraint tableName="chat_link" columnNames="chat_id, link_id" />
     </changeSet>
 </databaseChangeLog>
