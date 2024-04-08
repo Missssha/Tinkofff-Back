@@ -1,13 +1,5 @@
 app:
   telegram-token: ${TELEGRAM-API-KEY}
-
-spring:
-  application:
-    name: bot
-  jackson:
-    time-zone: UTC
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   retry:
     trigger: server-client
     strategy: const
@@ -18,6 +10,15 @@ spring:
     refill: 5
     capacity: 10
     timeout: 1
+
+spring:
+  application:
+    name: bot
+  jackson:
+    time-zone: UTC
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
 
 server:
   port: 8090

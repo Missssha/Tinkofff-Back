@@ -2,11 +2,11 @@ package edu.java.configuration.retryconfig;
 
 import java.time.Duration;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.util.retry.Retry;
 import reactor.util.retry.RetryBackoffSpec;
 
@@ -22,12 +22,18 @@ public class ExponentialStrategy {
     @Value("${app.retry.statuses}")
     List<Integer> statuses;
 
-    @Autowired
-    private List<RuntimeException> retryOnExceptions;
-
     @Bean
     public RetryBackoffSpec retryBackoffSpec() {
-        return Retry.backoff(maxAttempts, Duration.ofSeconds(delay)).filter(throwable -> retryOnExceptions.stream()
-            .anyMatch(x -> x.getClass().isAssignableFrom(throwable.getClass())));
+        return Retry
+            .backoff(maxAttempts, Duration.ofSeconds(delay))
+            .filter(throwable -> getStatusCodes(throwable, statuses));
+    }
+
+    private boolean getStatusCodes(Throwable throwable, List<Integer> statusCodes) {
+        if (throwable instanceof WebClientResponseException) {
+            int statusCode = ((WebClientResponseException) throwable).getStatusCode().value();
+            return statusCodes.contains(statusCode);
+        }
+        return false;
     }
 }
