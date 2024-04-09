@@ -12,8 +12,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.kafka.common.errors.ApiException;
 import org.springframework.stereotype.Service;
 import reactor.util.retry.RetryBackoffSpec;
+import request.AddLinkRequest;
 
 @Service
 public class MessageService {
@@ -104,11 +106,14 @@ public class MessageService {
 
     public boolean updateUserTrackingSites(User user, URI uri) {
         List<URI> trackSites = new ArrayList<>(user.getSites());
-
-        new ScrapperClient(retryBackoffSpec);
-        trackSites.add(uri);
-        updateTrackSitesAndCommit(user, trackSites);
-        return true;
+        try {
+            new ScrapperClient(retryBackoffSpec);
+            trackSites.add(uri);
+            updateTrackSitesAndCommit(user, trackSites);
+            return true;
+        } catch (ApiException ex) {
+            return false;
+        }
     }
 
     public boolean deleteTrackingSites(User user, URI uri) {
