@@ -12,7 +12,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.kafka.common.errors.ApiException;
 import org.springframework.stereotype.Service;
 import reactor.util.retry.RetryBackoffSpec;
 
@@ -110,7 +109,7 @@ public class MessageService {
             trackSites.add(uri);
             updateTrackSitesAndCommit(user, trackSites);
             return true;
-        } catch (ApiException ex) {
+        } catch (Exception ex) {
             return false;
         }
     }
