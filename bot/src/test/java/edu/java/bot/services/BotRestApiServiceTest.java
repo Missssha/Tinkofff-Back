@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import request.LinkUpdateRequest;
 
-public class RestAPIServiceTest {
+public class BotRestApiServiceTest {
     @Mock
     private TelegramBot telegramBot;
     @Mock
@@ -23,7 +23,7 @@ public class RestAPIServiceTest {
 
     @BeforeEach
     public void setUp() {
-        restApiService = new RestApiService(telegramBot, userService);
+        restApiService = new BotRestApiService(telegramBot, userService);
     }
 
     @Test()
