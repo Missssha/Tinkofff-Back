@@ -106,18 +106,10 @@ public class MessageService {
 
     public boolean updateUserTrackingSites(User user, URI uri) {
         List<URI> trackSites = new ArrayList<>(user.getSites());
-
-        try {
-            new ScrapperClient(retryBackoffSpec).addLinkById(
-                user.getId(),
-                new AddLinkRequest().setLink(uri)
-            ); //TODO extract ScrapperClient
-            trackSites.add(uri);
-            updateTrackSitesAndCommit(user, trackSites);
-            return true;
-        } catch (ApiException ex) {
-            return false;
-        }
+        new ScrapperClient(retryBackoffSpec);
+        trackSites.add(uri);
+        updateTrackSitesAndCommit(user, trackSites);
+        return true;
     }
 
     public boolean deleteTrackingSites(User user, URI uri) {
