@@ -2,6 +2,7 @@ package edu.java.bot.controllers;
 
 import edu.java.bot.models.Request.LinkUpdateRequest;
 import edu.java.bot.services.RestApiService;
+import io.github.bucket4j.Bucket;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UpdatesApiController implements UpdatesApi {
     private final RestApiService restApiService;
+    private final Bucket bucket;
 
     @Autowired
-    public UpdatesApiController(RestApiService restApiService) {
+    public UpdatesApiController(RestApiService restApiService, Bucket bucket) {
         this.restApiService = restApiService;
+        this.bucket = bucket;
     }
 
     public void updatesPost(
@@ -26,6 +29,7 @@ public class UpdatesApiController implements UpdatesApi {
         @Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid
         @RequestBody LinkUpdateRequest body
     ) {
+        bucket.tryConsume(1);
         restApiService.sendNotification(body.getTgChatIds(), body.getUrl(), body.getDescription());
     }
 
@@ -33,6 +37,7 @@ public class UpdatesApiController implements UpdatesApi {
         @Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid
         @RequestBody LinkUpdateRequest body
     ) {
+        bucket.tryConsume(1);
         restApiService.sendNotification(body.getTgChatIds(), body.getUrl(), body.getDescription());
     }
 }

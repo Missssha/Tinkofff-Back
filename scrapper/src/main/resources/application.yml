@@ -6,6 +6,16 @@ app:
     enable: true
     interval: 10s
     force-check-delay: 10s
+  retry:
+    trigger: server-client
+    strategy: const
+    max-attempts: 3
+    delay: 5
+    statuses: 400, 401, 402, 403, 404, 500, 501, 502, 503, 504
+  bucketJ:
+    refill: 5
+    capacity: 10
+    timeout: 1
 
 spring:
   jpa:
@@ -21,6 +31,7 @@ spring:
       url: jdbc:postgresql://localhost:5432/scrapper
       username: postgres
       password: postgres
+
 
 
 

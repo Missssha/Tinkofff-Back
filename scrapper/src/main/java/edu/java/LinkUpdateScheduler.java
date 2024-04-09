@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Log4j2
 @Component
@@ -27,18 +26,19 @@ public class LinkUpdateScheduler {
     private final JdbcLinkService jdbcLinkService;
     private final GitHubClient gitHubClient;
     private final StackOverFlowClient stackOverFlowClient;
-
-    private final BotClient botClient = new BotClient(WebClient.builder().build());
+    private final BotClient botClient;
 
     @Autowired
     public LinkUpdateScheduler(
         JdbcLinkService jdbcLinkService,
         GitHubClient gitHubClient,
-        StackOverFlowClient stackOverFlowClient
+        StackOverFlowClient stackOverFlowClient,
+        BotClient botClient
     ) {
         this.jdbcLinkService = jdbcLinkService;
         this.gitHubClient = gitHubClient;
         this.stackOverFlowClient = stackOverFlowClient;
+        this.botClient = botClient;
     }
 
     @Scheduled(fixedDelayString = "#{scheduler.interval}")

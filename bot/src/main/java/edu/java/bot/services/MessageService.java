@@ -15,7 +15,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+import reactor.util.retry.RetryBackoffSpec;
 
 @Service
 public class MessageService {
@@ -29,6 +29,7 @@ public class MessageService {
     private final CommandHandler commandHandler;
     private final UserService userRepository;
     private final UrlProcessor urlProcessor;
+    private RetryBackoffSpec retryBackoffSpec;
 
     public MessageService(
         CommandHandler commandHandler,
@@ -107,7 +108,7 @@ public class MessageService {
         List<URI> trackSites = new ArrayList<>(user.getSites());
 
         try {
-            new ScrapperClient(WebClient.builder().build()).addLinkById(
+            new ScrapperClient(retryBackoffSpec).addLinkById(
                 user.getId(),
                 new AddLinkRequest().setLink(uri)
             ); //TODO extract ScrapperClient
