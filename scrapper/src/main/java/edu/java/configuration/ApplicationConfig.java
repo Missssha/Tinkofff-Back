@@ -25,7 +25,7 @@ public record ApplicationConfig(
 
     @NotNull
     @Bean
-    BucketJ bucketj,
+    BucketJ bucketJ,
     @NotEmpty
     String gitUrl,
     @NotEmpty

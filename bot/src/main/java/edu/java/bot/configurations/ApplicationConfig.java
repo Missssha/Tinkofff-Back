@@ -17,7 +17,7 @@ public record ApplicationConfig(
 
     @NotNull
     @Bean
-    BucketJ bucket,
+    BucketJ bucketJ,
     @NotEmpty
     String telegramToken
 ) {
