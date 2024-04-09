@@ -5,7 +5,6 @@ import edu.java.client.StackOverFlowClient;
 import edu.java.dto.GitHubRepository;
 import edu.java.dto.Link;
 import edu.java.dto.StackOverFlowQuestion;
-import edu.java.models.BotClient;
 import edu.java.service.jdbc.JdbcLinkService;
 import edu.java.service.sender.SenderService;
 import java.net.URI;

@@ -17,6 +17,10 @@ app:
     refill: 5
     capacity: 10
     timeout: 1
+  kafka:
+    partitions-num: 10
+    replicas-num: 1
+    topics: topic1
 
 spring:
   jpa:

@@ -54,6 +54,8 @@ public record ApplicationConfig(
                           @NotNull int timeout) {
     }
 
-    public record Kafka(@NotNull String topics, @NotNull int partitionsNum, @NotNull int replicasNum) {
+    public record Kafka(@NotNull String topics,
+                        @NotNull int partitionsNum,
+                        @NotNull int replicasNum) {
     }
 }
