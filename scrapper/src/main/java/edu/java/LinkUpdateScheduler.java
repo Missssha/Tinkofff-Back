@@ -71,7 +71,7 @@ public class LinkUpdateScheduler {
         String owner = extractOwnerName(url);
         String repoName = extractRepoName(url);
 
-        GitHubRepository rep = gitHubClient.getRepositoryInfo(owner, repoName).block();
+        GitHubRepository rep = gitHubClient.getRepositoryInfo(owner, repoName);
         Timestamp lastPush = rep.getLastPush();
 
         if (lastPush.after(link.getLastCheckTime())) {

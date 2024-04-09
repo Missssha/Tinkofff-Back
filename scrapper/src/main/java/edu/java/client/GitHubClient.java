@@ -23,7 +23,7 @@ public class GitHubClient {
             .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE).build();
     }
 
-    public Mono<GitHubRepository> getRepositoryInfo(String name, String reposName) {
+    public GitHubRepository getRepositoryInfo(String name, String reposName) {
         return webClient
             .get()
             .uri(x -> x.path("/repos/{name}/{reposName}")
@@ -38,6 +38,7 @@ public class GitHubClient {
                 response -> Mono.error(new ClientException("Client error"))
             )
             .bodyToMono(GitHubRepository.class)
-            .retryWhen(retryBackoffSpec);
+            .retryWhen(retryBackoffSpec)
+            .block();
     }
 }

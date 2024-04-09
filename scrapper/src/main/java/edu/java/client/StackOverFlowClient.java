@@ -1,19 +1,24 @@
-
 package edu.java.client;
 
-import edu.java.dto.StackOverFlowQuestion;
 import edu.java.dto.StackOverFlowResponse;
-import java.util.List;
+import edu.java.models.exception.ClientException;
+import edu.java.models.exception.ServerException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import reactor.util.retry.RetryBackoffSpec;
 
 public class StackOverFlowClient {
 
     private WebClient webClient;
     private final WebClient.Builder webClientBuilder = WebClient.builder();
     private static final String URL = "/questions/%d?site=stackoverflow";
-    private static final String URLSOF = "/questions/%d/comments?site=stackoverflow";
+
+    @Autowired
+    private RetryBackoffSpec retryBackoffSpec;
 
     public StackOverFlowClient(String baseurl) {
         webClient = webClientBuilder.baseUrl(baseurl)
@@ -22,25 +27,21 @@ public class StackOverFlowClient {
 
     public StackOverFlowResponse fetchQuestion(long questionId) {
         String apiUrl = String.format(URL, questionId);
-        String commentsUrl = String.format(URLSOF, questionId);
 
-        Long comments = (long) webClient
-            .get()
-            .uri(commentsUrl)
-            .retrieve()
-            .bodyToMono(StackOverFlowResponse.class).block().getItems().size();
-
-        StackOverFlowResponse response = webClient
+        return webClient
             .get()
             .uri(apiUrl)
             .retrieve()
-            .bodyToMono(StackOverFlowResponse.class).block();
-
-        StackOverFlowResponse list = new StackOverFlowResponse();
-        StackOverFlowQuestion question = response.getItems().getFirst();
-        question.setCommentCount(comments);
-        list.setItems(List.of(question));
-
-        return list;
+            .onStatus(
+                HttpStatusCode::is5xxServerError,
+                response -> Mono.error(new ServerException("Server error comments"))
+            )
+            .onStatus(
+                HttpStatusCode::is4xxClientError,
+                response -> Mono.error(new ClientException("Client error comments"))
+            )
+            .bodyToMono(StackOverFlowResponse.class)
+            .retryWhen(retryBackoffSpec)
+            .block();
     }
 }
