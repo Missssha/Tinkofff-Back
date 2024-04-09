@@ -24,13 +24,12 @@ public class ConstantStrategy {
     public RetryBackoffSpec retryBackoffSpec() {
         return Retry
             .fixedDelay(maxAttempts, Duration.ofSeconds(delay))
-            .filter(throwable -> getStatusCodes(throwable, statuses));
+            .filter(throwable -> isContains(throwable, statuses));
     }
 
-    private boolean getStatusCodes(Throwable throwable, List<Integer> statusCodes) {
-        if (throwable instanceof WebClientResponseException) {
-            int statusCode = ((WebClientResponseException) throwable).getStatusCode().value();
-            return statusCodes.contains(statusCode);
+    private boolean isContains(Throwable throwable, List<Integer> statusCodes) {
+        if (throwable instanceof WebClientResponseException wcre) {
+            return statusCodes.contains(wcre.getStatusCode().value());
         }
         return false;
     }
