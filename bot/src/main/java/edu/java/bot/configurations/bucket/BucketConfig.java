@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BucketConfig {
-    @Value("${app.bucket.capacity}")
+    @Value("${app.bucketJ.capacity}")
     int capacity;
 
-    @Value("${app.bucket.refill}")
+    @Value("${app.bucketJ.refill}")
     int refill;
 
-    @Value("${app.bucket.timeout}")
+    @Value("${app.bucketJ.timeout}")
     int timeout;
 
     @Bean
