@@ -14,7 +14,6 @@ import request.LinkUpdateRequest;
 public class BotClient implements SenderService {
     private final String baseUrl = "http://localhost:8090";
     private final WebClient webClient = WebClient.builder().build();
-
     private final RetryBackoffSpec retryBackoffSpec;
 
     public BotClient(RetryBackoffSpec retryBackoffSpec) {

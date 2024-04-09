@@ -28,7 +28,6 @@ public class LinkUpdateScheduler {
     private final JdbcLinkService jdbcLinkService;
     private final GitHubClient gitHubClient;
     private final StackOverFlowClient stackOverFlowClient;
-    private final BotClient botClient;
     private final SenderService senderService;
 
     @Autowired
@@ -42,7 +41,6 @@ public class LinkUpdateScheduler {
         this.jdbcLinkService = jdbcLinkService;
         this.gitHubClient = gitHubClient;
         this.stackOverFlowClient = stackOverFlowClient;
-        this.botClient = botClient;
         this.senderService = senderService;
     }
 
