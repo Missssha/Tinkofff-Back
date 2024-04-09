@@ -1,6 +1,6 @@
 package edu.java.bot.services.kafka;
 
-import edu.java.bot.services.RestApiServiceInterface;
+import edu.java.bot.services.RestApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -10,28 +10,23 @@ import request.LinkUpdateRequest;
 @Service
 @Slf4j
 public class BotQueueConsumer {
-    private final KafkaTemplate<String, String> kafkaTemplate;
-
-    private final RestApiServiceInterface restApiServiceInterface;
+    private final BotQueueProducer botQueueProducer;
 
     public BotQueueConsumer(
         KafkaTemplate<String, String> kafkaTemplate,
-        RestApiServiceInterface restApiServiceInterface
+        RestApiService restApiServiceInterface
     ) {
-        this.kafkaTemplate = kafkaTemplate;
-        this.restApiServiceInterface = restApiServiceInterface;
+        botQueueProducer = new BotQueueProducer(restApiServiceInterface, kafkaTemplate);
     }
 
     @KafkaListener(id = "myId", topics = "topic1")
     public void listen(LinkUpdateRequest linkUpdateRequest) {
 
         if (checkLinkUpdateRequest(linkUpdateRequest)) {
-            restApiServiceInterface.sendNotification(linkUpdateRequest);
+            botQueueProducer.sendNotification(linkUpdateRequest);
         } else {
-            log.info("sending message to DLQ");
-            kafkaTemplate.send("topic_dlq", linkUpdateRequest.toString());
+            botQueueProducer.sendToDlq(linkUpdateRequest);
         }
-
     }
 
     private boolean checkLinkUpdateRequest(LinkUpdateRequest body) {
