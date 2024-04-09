@@ -1,7 +1,6 @@
 package edu.java.bot.controllers;
 
 import edu.java.bot.services.RestApiService;
-import edu.java.bot.services.RestApiServiceInterface;
 import io.github.bucket4j.Bucket;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -14,7 +13,7 @@ import request.LinkUpdateRequest;
 
 @RestController
 public class UpdatesApiController implements UpdatesApi {
-    private final RestApiServiceInterface restApiService;
+    private final RestApiService restApiService;
     private final Bucket bucket;
 
     @Autowired
