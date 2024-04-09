@@ -106,10 +106,14 @@ public class MessageService {
 
     public boolean updateUserTrackingSites(User user, URI uri) {
         List<URI> trackSites = new ArrayList<>(user.getSites());
-        new ScrapperClient(retryBackoffSpec);
-        trackSites.add(uri);
-        updateTrackSitesAndCommit(user, trackSites);
-        return true;
+        try {
+            new ScrapperClient(retryBackoffSpec);
+            trackSites.add(uri);
+            updateTrackSitesAndCommit(user, trackSites);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     public boolean deleteTrackingSites(User user, URI uri) {
