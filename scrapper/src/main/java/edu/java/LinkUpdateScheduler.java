@@ -35,7 +35,6 @@ public class LinkUpdateScheduler {
         JdbcLinkService jdbcLinkService,
         GitHubClient gitHubClient,
         StackOverFlowClient stackOverFlowClient,
-        BotClient botClient,
         SenderService senderService
     ) {
         this.jdbcLinkService = jdbcLinkService;
