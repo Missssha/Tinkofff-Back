@@ -11,22 +11,29 @@ import request.LinkUpdateRequest;
 @Slf4j
 public class BotQueueConsumer {
     private final BotQueueProducer botQueueProducer;
+    private final RestApiService restApiServiceInterface;
 
     public BotQueueConsumer(
         KafkaTemplate<String, String> kafkaTemplate,
         RestApiService restApiServiceInterface
     ) {
-        botQueueProducer = new BotQueueProducer(restApiServiceInterface, kafkaTemplate);
+        this.restApiServiceInterface = restApiServiceInterface;
+        botQueueProducer = new BotQueueProducer(kafkaTemplate);
     }
 
     @KafkaListener(id = "myId", topics = "topic1")
     public void listen(LinkUpdateRequest linkUpdateRequest) {
-
-        if (checkLinkUpdateRequest(linkUpdateRequest)) {
-            botQueueProducer.sendNotification(linkUpdateRequest);
-        } else {
+        try {
+            if (checkLinkUpdateRequest(linkUpdateRequest)) {
+                restApiServiceInterface.sendNotification(linkUpdateRequest);
+            } else {
+                botQueueProducer.sendToDlq(linkUpdateRequest);
+            }
+        } catch (Exception e) {
+            log.info("Error sending message");
             botQueueProducer.sendToDlq(linkUpdateRequest);
         }
+
     }
 
     private boolean checkLinkUpdateRequest(LinkUpdateRequest body) {
