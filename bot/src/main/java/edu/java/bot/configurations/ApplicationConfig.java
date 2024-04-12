@@ -19,7 +19,9 @@ public record ApplicationConfig(
     @Bean
     BucketJ bucketJ,
     @NotEmpty
-    String telegramToken
+    String telegramToken,
+    @NotNull
+    Kafka kafka
 ) {
     public record Retry(@NotNull String trigger,
                         @NotNull RetryStrategy strategy,
@@ -31,5 +33,9 @@ public record ApplicationConfig(
     public record BucketJ(@NotNull int refill,
                           @NotNull int capacity,
                           @NotNull int timeout) {
+    }
+
+    public record Kafka(@NotNull String topics, @NotNull int partitionsNum,
+                        @NotNull int replicasNum, @NotNull String topicDlq) {
     }
 }

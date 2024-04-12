@@ -1,6 +1,5 @@
 package edu.java.models.exception;
 
-import edu.java.models.Response.ApiErrorResponse;
 import jakarta.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import response.ApiErrorResponse;
 
 @RestControllerAdvice
 public class RestController {
@@ -19,7 +19,8 @@ public class RestController {
             HttpStatus.BAD_REQUEST.toString(),
             ex.getClass().toGenericString(),
             ex.getMessage(),
-            getStackTraceAsStringArray(ex));
+            getStackTraceAsStringArray(ex)
+        );
     }
 
     @ExceptionHandler(ValidationException.class)
@@ -30,7 +31,8 @@ public class RestController {
             HttpStatus.BAD_REQUEST.toString(),
             ex.getClass().getSimpleName(),
             ex.getMessage(),
-            getStackTraceAsStringArray(ex));
+            getStackTraceAsStringArray(ex)
+        );
     }
 
     public List<String> getStackTraceAsStringArray(Exception ex) {

@@ -31,7 +31,12 @@ public record ApplicationConfig(
     @NotEmpty
     String stackUrl,
     @NotNull
-    AccessType databaseAccessType) {
+    AccessType databaseAccessType,
+    @NotNull
+    @Bean
+    Kafka kafka,
+    @NotNull
+    Boolean useQueue) {
     public record Scheduler(boolean enable,
                             @NotNull Duration interval,
                             @NotNull Duration forceCheckDelay) {
@@ -47,5 +52,10 @@ public record ApplicationConfig(
     public record BucketJ(@NotNull int refill,
                           @NotNull int capacity,
                           @NotNull int timeout) {
+    }
+
+    public record Kafka(@NotNull String topics,
+                        @NotNull int partitionsNum,
+                        @NotNull int replicasNum) {
     }
 }

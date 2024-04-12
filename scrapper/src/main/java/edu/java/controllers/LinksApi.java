@@ -1,8 +1,5 @@
 package edu.java.controllers;
 
-import edu.java.models.Response.ApiErrorResponse;
-import edu.java.models.Response.LinkResponse;
-import edu.java.models.Response.ListLinksResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -16,6 +13,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import response.ApiErrorResponse;
+import response.LinkResponse;
+import response.ListLinksResponse;
 
 @Validated
 public interface LinksApi {

@@ -1,19 +1,14 @@
-package edu.java.models.Response;
+package response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.net.URI;
 import java.util.Objects;
-import javax.annotation.Generated;
 import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * LinkResponse
  */
-@Validated
 @Setter
-@Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-02-29T17:43:31.402605197Z[GMT]")
 public class LinkResponse {
     @JsonProperty("id")
     private Long id = null;
@@ -31,7 +26,6 @@ public class LinkResponse {
      *
      * @return id
      **/
-    @Schema(description = "")
 
     public Long getId() {
         return id;
@@ -51,7 +45,6 @@ public class LinkResponse {
      *
      * @return url
      **/
-    @Schema(description = "")
 
     public URI getUrl() {
         return url;

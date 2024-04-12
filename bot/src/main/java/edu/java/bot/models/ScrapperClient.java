@@ -1,10 +1,5 @@
 package edu.java.bot.models;
 
-import edu.java.bot.models.Request.AddLinkRequest;
-import edu.java.bot.models.Request.RemoveLinkRequest;
-import edu.java.bot.models.Response.ApiErrorResponse;
-import edu.java.bot.models.Response.LinkResponse;
-import edu.java.bot.models.Response.ListLinksResponse;
 import edu.java.bot.models.exception.ApiException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -13,6 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.RetryBackoffSpec;
+import request.AddLinkRequest;
+import request.RemoveLinkRequest;
+import response.ApiErrorResponse;
+import response.LinkResponse;
+import response.ListLinksResponse;
 
 public class ScrapperClient {
     private final String baseUrlLinks = "http://localhost:1010/links";

@@ -5,8 +5,8 @@ import edu.java.client.StackOverFlowClient;
 import edu.java.dto.GitHubRepository;
 import edu.java.dto.Link;
 import edu.java.dto.StackOverFlowQuestion;
-import edu.java.models.BotClient;
 import edu.java.service.jdbc.JdbcLinkService;
+import edu.java.service.sender.SenderService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import request.LinkUpdateRequest;
 
 @Log4j2
 @Component
@@ -26,19 +27,19 @@ public class LinkUpdateScheduler {
     private final JdbcLinkService jdbcLinkService;
     private final GitHubClient gitHubClient;
     private final StackOverFlowClient stackOverFlowClient;
-    private final BotClient botClient;
+    private final SenderService senderService;
 
     @Autowired
     public LinkUpdateScheduler(
         JdbcLinkService jdbcLinkService,
         GitHubClient gitHubClient,
         StackOverFlowClient stackOverFlowClient,
-        BotClient botClient
+        SenderService senderService
     ) {
         this.jdbcLinkService = jdbcLinkService;
         this.gitHubClient = gitHubClient;
         this.stackOverFlowClient = stackOverFlowClient;
-        this.botClient = botClient;
+        this.senderService = senderService;
     }
 
     @Scheduled(fixedDelayString = "#{scheduler.interval}")
@@ -75,7 +76,9 @@ public class LinkUpdateScheduler {
         Timestamp lastPush = rep.getLastPush();
 
         if (lastPush.after(link.getLastCheckTime())) {
-            botClient.updateLink(link.getUrl(), link.getChats());
+            LinkUpdateRequest linkUpdateRequest =
+                new LinkUpdateRequest(link.getId(), link.getUrl(), "Обновление данных");
+            senderService.updateLink(linkUpdateRequest);
             jdbcLinkService.updateLinkLastCheckTime(link.getId(), now);
         }
     }
@@ -94,8 +97,9 @@ public class LinkUpdateScheduler {
         Timestamp lastActivity = question.getLastActivityAsTimestamp();
 
         if (lastActivity.after(link.getLastCheckTime())) {
-            description.append("обновление данных : ");
-            jdbcLinkService.updateLinkLastCheckTime(link.getId(), now);
+            LinkUpdateRequest linkUpdateRequest =
+                new LinkUpdateRequest(link.getId(), link.getUrl(), "обновление данных");
+            senderService.updateLink(linkUpdateRequest);
 
             if (question.getAnswerCount() > jdbcLinkService.getLinkPropertiesById(link.getId()).getCountOfAnswer()) {
                 description
@@ -111,7 +115,8 @@ public class LinkUpdateScheduler {
                 jdbcLinkService.updateCountOfCommentsById(link.getId(), question.getCommentCount());
             }
 
-            botClient.updateLink(link.getUrl(), link.getChats());
+            linkUpdateRequest = new LinkUpdateRequest(link.getId(), link.getUrl(), description.toString());
+            senderService.updateLink(linkUpdateRequest);
 
         }
     }

@@ -17,6 +17,10 @@ app:
     refill: 5
     capacity: 10
     timeout: 1
+  kafka:
+    partitions-num: 10
+    replicas-num: 1
+    topics: topic1
 
 spring:
   jpa:
@@ -32,6 +36,13 @@ spring:
       url: jdbc:postgresql://localhost:5432/scrapper
       username: postgres
       password: postgres
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties:
+      spring.json.value.default.type: dto.request.LinkUpdateRequest
+    bootstrapServers: localhost:29092
 
 
 

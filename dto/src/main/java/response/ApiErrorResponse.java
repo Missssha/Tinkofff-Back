@@ -1,26 +1,31 @@
-package edu.java.bot.models.Response;
+package response;
 
-import jakarta.validation.Valid;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.validation.annotation.Validated;
 
 @Setter
 @Getter
 @AllArgsConstructor
-@Validated
 public class ApiErrorResponse {
+    @JsonProperty("description")
+    private String description = null;
 
-    private String description;
-    private String code;
-    private String exceptionName;
-    private String exceptionMessage;
-    @Valid
-    private List<String> stacktrace;
+    @JsonProperty("code")
+    private String code = null;
+
+    @JsonProperty("exceptionName")
+    private String exceptionName = null;
+
+    @JsonProperty("exceptionMessage")
+    private String exceptionMessage = null;
+
+    @JsonProperty("stacktrace")
+    private List<String> stacktrace = null;
 
     public ApiErrorResponse description(String description) {
         this.description = description;
@@ -80,6 +85,7 @@ public class ApiErrorResponse {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class ApiErrorResponse {\n");
+
         sb.append("    description: ").append("\n");
         sb.append("    code: ").append("\n");
         sb.append("    exceptionName: ").append("\n");
