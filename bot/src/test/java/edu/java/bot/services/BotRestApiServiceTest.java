@@ -6,6 +6,7 @@ import edu.java.bot.users.User;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -19,11 +20,13 @@ public class BotRestApiServiceTest {
     @Mock
     private RestApiService restApiService;
     @Mock
+    private MeterRegistry meterRegistry;
+    @Mock
     private User mockUser;
 
     @BeforeEach
     public void setUp() {
-        restApiService = new BotRestApiService(telegramBot, userService);
+        restApiService = new BotRestApiService(telegramBot, userService, meterRegistry);
     }
 
     @Test()
