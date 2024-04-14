@@ -40,6 +40,7 @@ public class BotRestApiService implements RestApiService {
 
         }
     }
+
     private void increaseMessageMetric() {
         Counter counter = Counter
             .builder("messages.proceeded")
