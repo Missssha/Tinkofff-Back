@@ -53,7 +53,7 @@ management:
       exposure:
         include: "info, health, prometheus"
       path-mapping:
-        prometheus: metrics
+        prometheus: /metrics
       base-path: /
   metrics:
     tags:

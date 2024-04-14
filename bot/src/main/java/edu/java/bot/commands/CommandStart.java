@@ -42,6 +42,7 @@ public class CommandStart implements Command {
 
         if (userOptional.isEmpty()) {
             User user = new User(chatId, List.of(), SessionState.BASE_STATE);
+            System.out.println(user.getId());
             userService.saveUser(user);
             return SUCCESS_REGISTRATION_MESSAGE;
         }
