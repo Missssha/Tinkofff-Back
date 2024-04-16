@@ -6,10 +6,11 @@ import edu.java.bot.repository.UserService;
 import edu.java.bot.users.User;
 import java.util.List;
 import java.util.Optional;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 @Component
-
+@Log4j2
 public class CommandStart implements Command {
     public static final String SUCCESS_REGISTRATION_MESSAGE = "Регистрация прошла успешно!";
     private static final String ALREADY_REGISTRATE_MESSAGE = "Вы уже зарегистрированы";
@@ -42,6 +43,7 @@ public class CommandStart implements Command {
 
         if (userOptional.isEmpty()) {
             User user = new User(chatId, List.of(), SessionState.BASE_STATE);
+            log.info(user.getId());
             userService.saveUser(user);
             return SUCCESS_REGISTRATION_MESSAGE;
         }
