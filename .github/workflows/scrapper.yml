@@ -11,7 +11,7 @@ on:
       - hw10
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: missssha/tinkofff-bot/bot
+  IMAGE_NAME: missssha/tinkofff-bot/scrapper
 jobs:
   build:
     runs-on: ubuntu-latest
