@@ -1,7 +1,7 @@
 package edu.java.controllers;
 
 import edu.java.dto.Link;
-import edu.java.service.jdbc.JdbcLinkService;
+import edu.java.service.LinkService;
 import io.github.bucket4j.Bucket;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LinksApiController implements LinksApi {
 
-    private final JdbcLinkService jdbcLinkService;
+    private final LinkService linkService;
     private final Bucket bucket;
 
     @Autowired
-    public LinksApiController(JdbcLinkService jdbcLinkService, Bucket bucket) {
-        this.jdbcLinkService = jdbcLinkService;
+    public LinksApiController(LinkService linkService, Bucket bucket) {
+        this.linkService = linkService;
         this.bucket = bucket;
     }
 
@@ -31,7 +31,7 @@ public class LinksApiController implements LinksApi {
     ) {
         try {
             bucket.tryConsume(1);
-            jdbcLinkService.removeLink(id);
+            linkService.removeLink(id);
         } catch (Error e) {
             log.info(e);
         }
@@ -41,7 +41,7 @@ public class LinksApiController implements LinksApi {
     public void linksGet() {
         try {
             bucket.tryConsume(1);
-            jdbcLinkService.getLinks();
+            linkService.getLinks();
         } catch (Error e) {
             log.info(e);
         }
@@ -54,7 +54,7 @@ public class LinksApiController implements LinksApi {
         try {
             bucket.tryConsume(1);
             Link link = new Link(url);
-            jdbcLinkService.addLink(link);
+            linkService.addLink(link);
         } catch (Error e) {
             log.info(e);
         }
